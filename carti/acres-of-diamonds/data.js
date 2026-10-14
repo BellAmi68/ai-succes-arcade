@@ -4,7 +4,7 @@
    Structura acestui fișier este descrisă în README.md („Schema unei camere”). */
 window.CAMERA = {
   id: "acres-of-diamonds",
-  titlu: "Pogoane de diamante",
+  titlu: "Întinderi de diamante",
   titluOriginal: "Acres of Diamonds",
   autor: "Russell H. Conwell",
   ani: "1843–1925",
@@ -44,7 +44,7 @@ window.CAMERA = {
     },
     acasa: {
       en: "Had Ali Hafed remained at home and dug in his own cellar, or underneath his own wheat-fields, or in his own garden, […] he would have had “acres of diamonds.”",
-      ro: "Dacă Ali Hafed ar fi rămas acasă și ar fi săpat în propria pivniță, sub propriile lanuri de grâu sau în propria grădină, […] ar fi avut «pogoane de diamante».",
+      ro: "Dacă Ali Hafed ar fi rămas acasă și ar fi săpat în propria pivniță, sub propriile lanuri de grâu sau în propria grădină, […] ar fi avut «întinderi de diamante».",
       loc: "Morala poveștii-ramă"
     },
     datoria: {
@@ -146,7 +146,7 @@ window.CAMERA = {
       titlu: "Glosar",
       html:
         "<ul>" +
-        "<li><strong>Acru / pogon:</strong> „acre” e o unitate engleză de suprafață (cam 0,4 hectare). Am tradus titlul cu <em>pogon</em>, unitatea veche românească (cam 0,5 ha).</li>" +
+        "<li><strong>Acre (acru):</strong> unitate engleză de suprafață, cam 0,4 hectare. „Acres of diamonds” înseamnă, literal, „acri de diamante”; am tradus prin <em>întinderi de diamante</em>, ca să se înțeleagă imaginea: câmpuri întregi pline de comori.</li>" +
         "<li><strong>Golconda:</strong> regiune din India, celebră în trecut pentru diamantele ei; în engleză a ajuns sinonim cu „sursă de bogăție”.</li>" +
         "<li><strong>Indus:</strong> mare râu din Asia de Sud.</li>" +
         "<li><strong>Parabolă:</strong> poveste scurtă care ilustrează o învățătură.</li>" +
@@ -344,7 +344,7 @@ window.CAMERA = {
       { minute: "45–50", etapa: "Bilet de ieșire", activitate: "Itemul 7 din fișă sau, pe scurt: „Un «diamant» din școala/cartierul nostru este… pentru că…”" }
     ],
     fisaElev: {
-      titlu: "Fișă de lucru · „Pogoane de diamante” (Russell H. Conwell)",
+      titlu: "Fișă de lucru · „Întinderi de diamante” (Russell H. Conwell)",
       instructiuni: "Răspunde pe scurt. Acolo unde ți se cere, sprijină-ți răspunsul pe un citat din dosar.",
       itemi: [
         { text: "Explică, cu cuvintele tale, paradoxul: „Nu pierduse nimic, dar era sărac pentru că era nemulțumit și nemulțumit pentru că se temea că e sărac.”", linii: 3 },

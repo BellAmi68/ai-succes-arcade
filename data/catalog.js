@@ -4,7 +4,7 @@
 window.CATALOG = [
   {
     id: "acres-of-diamonds",
-    titlu: "Pogoane de diamante",
+    titlu: "Întinderi de diamante",
     titluOriginal: "Acres of Diamonds",
     autor: "Russell H. Conwell",
     an: "conferință, text tipărit în 1890",
