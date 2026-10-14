@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lecturi care schimbă</title>
+  <meta name="description" content="Arcadă educativă gratuită cu clasici ai dezvoltării personale din domeniul public: camere-joc pentru elevi, fișe pentru profesori și exerciții practice pentru adulți.">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <a class="skip" href="#continut">Sari la conținut</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="./">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M14 8h36l12 16-30 34L2 24z" fill="#2fb3c2" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><path d="M2 24h60M14 8l10 16 8 34 8-34 10-16M24 24 32 8l8 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/></svg>
+        Lecturi care schimbă
+      </a>
+      <nav class="header-links" aria-label="Principal">
+        <a href="#catalog">Catalog</a>
+        <a href="#despre">Despre</a>
+        <button class="theme-btn" type="button" data-theme-toggle>Mod întunecat</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="continut">
+    <section class="hero">
+      <div class="wrap">
+        <p class="kicker">Arcadă de lectură · gratuită · fără cont</p>
+        <h1>Cărți vechi.<br>Lacăte noi.</h1>
+        <p class="lead">Clasici ai dezvoltării personale, din domeniul public, transformați în camere de joc. Citești indicii, deschizi lacăte cu argumente, apoi iei o idee cu tine — azi.</p>
+        <div class="btn-row">
+          <a class="btn" href="carti/acres-of-diamonds/">Începe cu „Pogoane de diamante”</a>
+          <a class="btn secondary" href="#catalog">Vezi catalogul</a>
+        </div>
+
+        <div class="audiences" role="list">
+          <div class="audience" role="listitem">
+            <h3>Elevi</h3>
+            <p>Joacă, rezolvă, justifică. Fiecare lacăt se deschide doar cu răspunsul corect <em>și</em> citatul care îl dovedește.</p>
+          </div>
+          <div class="audience" role="listitem">
+            <h3>Profesori</h3>
+            <p>Fiecare cameră are o fișă tipăribilă, barem și un plan pentru o oră de 50 de minute.</p>
+          </div>
+          <div class="audience" role="listitem">
+            <h3>Cititori adulți</h3>
+            <p>La final, un exercițiu scurt „aplică azi”: transformi ideea cărții într-un pas concret.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="catalog" class="wrap" aria-labelledby="t-int">
+      <h2 class="section-title" id="t-int">Clasici internaționali</h2>
+      <p class="muted">Citatele sunt traduse de noi direct din originalul în limba engleză.</p>
+      <div class="catalog" id="catalog-international"></div>
+
+      <h2 class="section-title" id="t-ro">Clasici români</h2>
+      <p class="muted">Texte scurte din literatura română, citite prin aceeași lentilă: ce ne învață despre muncă, dreptate și alegeri.</p>
+      <div class="catalog" id="catalog-romanesc"></div>
+      <noscript><p class="card">Catalogul are nevoie de JavaScript. Poți intra direct în prima cameră: <a href="carti/acres-of-diamonds/">Pogoane de diamante</a>.</p></noscript>
+    </section>
+
+    <section id="despre" class="wrap" aria-labelledby="t-despre">
+      <h2 class="section-title" id="t-despre">Cum funcționează o cameră</h2>
+      <div class="principles">
+        <div><strong>1. Dosarul de indicii.</strong> Context, rezumat, citate scurte, glosar.</div>
+        <div><strong>2. Breakout.</strong> Cinci lacăte. Răspuns + citat-dovadă = cheie.</div>
+        <div><strong>3. Mini-jocuri.</strong> Ordonezi povestea, sapi după idei adevărate.</div>
+        <div><strong>4. Reflecție și „aplică azi”.</strong> Din carte, în ziua ta.</div>
+        <div><strong>5. Fișa profesorului.</strong> Plan de lecție, fișă de lucru, barem.</div>
+      </div>
+      <p class="muted narrow">Nu există conturi, reclame sau colectare de date. Ce scrii în exerciții rămâne doar în browserul tău și poate fi șters oricând dintr-un buton.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p><strong>Lecturi care schimbă</strong> — proiect educativ necomercial. Textele originale sunt în domeniul public; traducerile citatelor, rezumatele și jocurile sunt originale.</p>
+      <p>Fără conturi. Fără cookie-uri de urmărire. Fără analytics.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/util.js"></script>
+  <script src="data/catalog.js"></script>
+  <script src="assets/js/catalog.js"></script>
+</body>
+</html>
