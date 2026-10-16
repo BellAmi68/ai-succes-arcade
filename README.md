@@ -40,6 +40,7 @@ carti/
   the-way-to-wealth/           Camera pentru Benjamin Franklin (aceeași structură)
   the-power-of-concentration/  Camera pentru Theron Q. Dumont / W. W. Atkinson (aceeași structură)
   as-a-man-thinketh/           Camera pentru James Allen (aceeași structură)
+  the-psychology-of-salesmanship/  Camera pentru William Walker Atkinson (aceeași structură)
   _sablon/                     Șablon gol pentru o carte nouă
 tools/
   verifica-camera.js           Verificare automată a unui data.js (Node.js)
@@ -118,6 +119,10 @@ Toate câmpurile `en` din `carti/the-power-of-concentration/data.js` și toate f
 ## Citatele din Allen: verificate
 
 Toate câmpurile `en` din `carti/as-a-man-thinketh/data.js` și toate frazele `original` din jocul de potrivire se regăsesc exact în `Surse/as-a-man-thinketh.txt` (Project Gutenberg #4507), verificat automat cu `node tools/verifica-camera.js carti/as-a-man-thinketh/data.js --sursa Surse/as-a-man-thinketh.txt`, cu majusculele sursei („MAN'S”, „UNTIL”, „CALMNESS”). Liniuțele de subliniere din Gutenberg (italicul) sunt omise; omisiunile sunt marcate cu `[…]`. Traducerile sunt proprii, făcute din original, fără a folosi traducerile românești existente. Afirmațiile absolute ale cărții despre sărăcie, suferință și boală apar doar ca material pentru lectura critică (lacătele 2 și 3, fișa „Pentru cititorul critic”), lucru semnalat și în `profesor.atentie`.
+
+## Citatele din Atkinson: verificate
+
+Toate câmpurile `en` din `carti/the-psychology-of-salesmanship/data.js` se regăsesc exact în `Surse/psychology-of-salesmanship.txt` (Project Gutenberg #41510), verificat automat cu `node tools/verifica-camera.js carti/the-psychology-of-salesmanship/data.js --sursa Surse/psychology-of-salesmanship.txt`, cu ortografia și punctuația sursei (ghilimele drepte, liniuța dublă „--”). Liniuțele de subliniere din Gutenberg (italicul) sunt omise; omisiunile sunt marcate cu `[…]`. Traducerile sunt proprii. Camera folosește doar nucleul practic: capitolul I (vânzarea ca proces psihologic), capitolele II–III (mintea vânzătorului), capitolul VII (cele zece etape ale cumpărătorului, pe care le urmează lacătele și jocurile) și capitolul VIII (abordarea), plus câteva fraze din capitolele IV–VI, IX și X. Tipologia frenologică din capitolele IV–V și limbajul rasist sau condescendent al epocii apar doar în fișa „Pentru cititorul critic” și în `profesor.atentie`. Atkinson e același autor ca Theron Q. Dumont; cele două camere au linkuri una către cealaltă.
 
 ## Licență
 

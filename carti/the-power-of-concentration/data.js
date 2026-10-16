@@ -175,7 +175,7 @@ window.CAMERA = {
       html:
         "<p>Pe copertă scrie <strong>Theron Q. Dumont</strong>, iar lista celorlalte cărți ale lui (despre magnetism personal, memorie, vânzări) sună ca a unui profesor de succes. Pe pagina Project Gutenberg însă, autorul e trecut cu numele adevărat: <strong>William Walker Atkinson</strong> (1862–1932).</p>" +
         "<p>Atkinson s-a născut la Baltimore, în SUA. A lucrat de tânăr în comerț, apoi a devenit avocat. După o prăbușire nervoasă, pusă pe seama surmenajului, spunea că s-a vindecat cu ajutorul ideilor „gândirii noi” (vezi fișa următoare). S-a mutat la Chicago, unde a scris și a editat reviste ale mișcării. A murit la Los Angeles, în 1932, așa că textele lui sunt azi în domeniul public.</p>" +
-        "<p>A scris peste o sută de cărți și broșuri, multe sub alte nume: <em>Yogi Ramacharaka</em> (cărți despre yoga), <em>Theron Q. Dumont</em> (despre voință, memorie, magnetism personal) și altele.</p>"
+        "<p>A scris peste o sută de cărți și broșuri, multe sub alte nume: <em>Yogi Ramacharaka</em> (cărți despre yoga), <em>Theron Q. Dumont</em> (despre voință, memorie, magnetism personal) și altele. Cu numele adevărat a semnat, între altele, un manual de vânzări din 1912: <a href=\"../the-psychology-of-salesmanship/\">deschide camera „Psihologia artei de a vinde”</a>.</p>"
     },
     {
       id: "pseudonim",

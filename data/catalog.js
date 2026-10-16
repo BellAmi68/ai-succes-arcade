@@ -87,6 +87,18 @@ window.CATALOG = [
     teaser: "Exerciții vechi de un secol pentru atenție, testate pe telefonul de azi. Deschide 5 lacăte, urmărește secundarul printre notificări false și află ce sfaturi rezistă."
   },
   {
+    id: "the-psychology-of-salesmanship",
+    titlu: "Psihologia artei de a vinde",
+    titluOriginal: "The Psychology of Salesmanship",
+    autor: "William Walker Atkinson",
+    an: "1912",
+    grup: "international",
+    stare: "activ",
+    url: "carti/the-psychology-of-salesmanship/",
+    culoare: "#9a4d1f",
+    teaser: "Zece pași prin mintea cumpărătorului, de la „te văd” la semnătură. Deschide 5 lacăte, recunoaște etapele într-o vânzare de azi și trage linia dintre a convinge și a manipula."
+  },
+  {
     id: "cinci-paini",
     titlu: "Cinci pâini",
     titluOriginal: "",
