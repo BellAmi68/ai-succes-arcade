@@ -94,6 +94,13 @@ p { margin: 0 0 1em; }
 .site-header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 60px; }
 .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); font-family: var(--serif); font-weight: 700; font-size: 1.15rem; }
 .brand svg { width: 30px; height: 30px; flex: none; }
+.brand-text { display: flex; flex-direction: column; line-height: 1.15; }
+.brand-tagline { font: 500 .74rem/1.25 var(--sans); color: var(--muted); letter-spacing: .01em; }
+.theme-btn { white-space: nowrap; }
+@media (max-width: 600px) {
+  .site-header .wrap:has(.brand-tagline) { flex-wrap: wrap; row-gap: 2px; padding-top: 8px; padding-bottom: 6px; }
+  .site-header .wrap:has(.brand-tagline) .header-links { margin-left: auto; }
+}
 .header-links { display: flex; gap: 14px; align-items: center; font-size: .95rem; }
 .header-links a { text-decoration: none; }
 .theme-btn { background: none; border: 1px solid var(--line); color: var(--ink); border-radius: 999px; padding: 4px 10px; cursor: pointer; font: inherit; font-size: .85rem; }
@@ -130,8 +137,33 @@ p { margin: 0 0 1em; }
 .pill.soon { color: var(--muted); }
 
 /* ---------- hero pagina de start ---------- */
-.hero { padding: 48px 0 28px; }
-.hero .kicker { font-weight: 700; color: var(--accent); letter-spacing: .08em; text-transform: uppercase; font-size: .85rem; }
+/* Bannerul cu imagine: textul stă pe partea stângă, întunecată, a imaginii.
+   Culorile sunt fixe (nu depind de temă), pentru că fundalul e mereu închis. */
+.hero-banner { position: relative; isolation: isolate; overflow: hidden; background: #0b1424; color: #f4eddd; }
+.hero-banner__img img { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; object-position: right center; }
+.hero-banner::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(90deg, rgba(8, 14, 26, .78) 0%, rgba(8, 14, 26, .5) 38%, rgba(8, 14, 26, 0) 62%);
+}
+.hero-banner__copy { display: flex; flex-direction: column; justify-content: center; min-height: clamp(420px, 46vw, 600px); padding-top: 48px; padding-bottom: 48px; }
+.hero-banner__copy > * { max-width: min(34rem, 46%); }
+.hero-banner h1 { color: #fff; text-shadow: 0 2px 14px rgba(0, 0, 0, .55); }
+.hero-banner .kicker { color: #7fd6da; }
+.hero-triad { font-family: var(--serif); font-size: clamp(1.15rem, 2.4vw, 1.5rem); color: #e8bd62; font-weight: 700; text-shadow: 0 1px 10px rgba(0, 0, 0, .6); }
+.hero-banner .btn { border-color: #0b1424; box-shadow: 3px 3px 0 #05070b; }
+.hero-banner .btn.secondary { background: #fffcf5; color: #1c2230; }
+
+/* Ecrane înguste: imaginea sus (decupată pe cărți și lupă), textul dedesubt pe fundal închis. */
+@media (max-width: 760px) {
+  .hero-banner__img { position: relative; display: block; aspect-ratio: 4 / 3; max-height: 60vh; }
+  .hero-banner__img img { z-index: 0; object-position: 78% center; }
+  .hero-banner::before { inset: 0 0 auto; z-index: 1; aspect-ratio: 4 / 3; max-height: 60vh; background: linear-gradient(180deg, rgba(11, 20, 36, .15) 0%, rgba(11, 20, 36, .15) 55%, #0b1424 100%); }
+  .hero-banner__copy { position: relative; z-index: 2; min-height: 0; margin-top: -56px; padding-top: 0; padding-bottom: 32px; }
+  .hero-banner__copy > * { max-width: none; }
+}
+
+.hero { padding: 32px 0 28px; }
+.kicker { font-weight: 700; color: var(--accent); letter-spacing: .08em; text-transform: uppercase; font-size: .85rem; }
 .hero p.lead { font-size: 1.2rem; max-width: 640px; }
 .audiences { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 28px 0 8px; }
 .audience { padding: 16px 18px; border-radius: var(--radius); border: 1.5px solid var(--line); background: var(--card); }

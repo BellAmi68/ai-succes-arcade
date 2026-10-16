@@ -15,7 +15,10 @@
     <div class="wrap">
       <a class="brand" href="./">
         <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M14 8h36l12 16-30 34L2 24z" fill="#2fb3c2" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><path d="M2 24h60M14 8l10 16 8 34 8-34 10-16M24 24 32 8l8 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/></svg>
-        Lecturi care schimbă
+        <span class="brand-text">
+          Lecturi care schimbă
+          <span class="brand-tagline">Cărți care schimbă minți · Joc de lectură interactivă</span>
+        </span>
       </a>
       <nav class="header-links" aria-label="Principal">
         <a href="#catalog">Catalog</a>
@@ -26,15 +29,25 @@
   </header>
 
   <main id="continut">
-    <section class="hero">
-      <div class="wrap">
+    <section class="hero-banner" aria-labelledby="t-hero">
+      <picture class="hero-banner__img">
+        <source type="image/webp" srcset="assets/img/hero-1000.webp 1000w, assets/img/hero-1717.webp 1717w" sizes="100vw">
+        <img src="assets/hero.png" width="1717" height="916" alt="" fetchpriority="high" decoding="async">
+      </picture>
+      <div class="wrap hero-banner__copy">
         <p class="kicker">Arcadă de lectură · gratuită · fără cont</p>
-        <h1>Cărți vechi.<br>Lacăte noi.</h1>
-        <p class="lead">Clasici ai dezvoltării personale, din domeniul public, transformați în camere de joc. Citești indicii, deschizi lacăte cu argumente, apoi iei o idee cu tine — azi.</p>
+        <h1 id="t-hero">Transformă subiectul cărții într-o anchetă.</h1>
+        <p class="hero-triad">Citește. Caută dovezi. Deschide lacătul.</p>
         <div class="btn-row">
           <a class="btn" href="carti/acres-of-diamonds/">Începe cu „Întinderi de diamante”</a>
           <a class="btn secondary" href="#catalog">Vezi catalogul</a>
         </div>
+      </div>
+    </section>
+
+    <section class="hero">
+      <div class="wrap">
+        <p class="lead">Clasici ai dezvoltării personale, din domeniul public, transformați în camere de joc. Citești indicii, deschizi lacăte cu argumente, apoi iei o idee cu tine — azi.</p>
 
         <div class="audiences" role="list">
           <div class="audience" role="listitem">
