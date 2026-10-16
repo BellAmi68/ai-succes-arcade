@@ -104,6 +104,22 @@ p { margin: 0 0 1em; }
 .header-links { display: flex; gap: 14px; align-items: center; font-size: .95rem; }
 .header-links a { text-decoration: none; }
 .theme-btn { background: none; border: 1px solid var(--line); color: var(--ink); border-radius: 999px; padding: 4px 10px; cursor: pointer; font: inherit; font-size: .85rem; }
+/* Ecrane înguste: antetul rămâne pe un singur rând (bara cu pași se lipește la 60px sub el). */
+@media (max-width: 480px) {
+  .site-header .wrap { gap: 8px; }
+  .brand { gap: 7px; font-size: .98rem; line-height: 1.1; min-width: 0; }
+  .brand svg { width: 26px; height: 26px; }
+  .header-links { gap: 8px; font-size: .84rem; line-height: 1.15; min-width: 0; }
+  .header-links a { text-align: center; }
+  /* Comutatorul de temă devine pictogramă; textul rămâne în buton pentru cititoarele de ecran. */
+  .theme-btn[data-theme-toggle] { font-size: 0; width: 36px; height: 36px; padding: 0; flex: none; display: inline-grid; place-items: center; }
+  .theme-btn[data-theme-toggle]::before { content: "◐"; font-size: 1.1rem; line-height: 1; }
+}
+@media (max-width: 359px) {
+  .brand { font-size: .9rem; gap: 5px; }
+  .brand svg { width: 22px; height: 22px; }
+  .header-links { gap: 6px; font-size: .8rem; }
+}
 
 /* ---------- butoane ---------- */
 .btn {
