@@ -25,6 +25,8 @@ assets/
   js/room.js                   Motorul camerei: citește window.CAMERA și construiește pagina
   js/fisa.js                   Generează fișa profesorului din window.CAMERA.profesor
   img/favicon.svg
+  img/hero-1717.webp, hero-1000.webp  Imaginea din bannerul paginii de start (WebP optimizat)
+  hero.png                     Originalul imaginii; rezervă pentru browsere fără WebP
 data/
   catalog.js                   Lista cărților (active și „în curând”)
 carti/
