@@ -35,6 +35,7 @@ carti/
     fisa.html                  Fișa profesorului (tipăribilă)
     data.js                    TOT conținutul camerei
   the-art-of-money-getting/    Camera pentru P. T. Barnum (aceeași structură)
+  the-science-of-getting-rich/ Camera pentru Wallace D. Wattles (aceeași structură)
   _sablon/                     Șablon gol pentru o carte nouă
 tools/
   verifica-camera.js           Verificare automată a unui data.js (Node.js)
@@ -92,6 +93,10 @@ Toate câmpurile `en` din `carti/acres-of-diamonds/data.js` au fost confruntate 
 ## Citatele din Barnum: verificate
 
 Toate câmpurile `en` din `carti/the-art-of-money-getting/data.js` se regăsesc exact în `Surse/art-of-money-getting.txt` (Project Gutenberg #8581), cu ortografia sursei („to-day”, „indorse”, „he don't advertise”). Omisiunile sunt marcate cu `[…]`. Tot din sursă au fost verificate cifrele din dosar (canapeaua de 30.000 de dolari, biletul lui Genin de 225 de dolari, girurile de 5.000 și 10.000 de dolari, averea de 60.000 de dolari a showmanului din Holborn).
+
+## Citatele din Wattles: verificate
+
+Toate câmpurile `en` din `carti/the-science-of-getting-rich/data.js` se regăsesc exact în `Surse/science-of-getting-rich.txt` (Project Gutenberg #59844), cu ortografia și majusculele sursei („Certain Way”, „ALL”, „EFFICIENCY”). Omisiunile sunt marcate cu `[…]`. Tot din sursă au fost verificate detaliile din dosar (prețul de 1 dolar și editura Elizabeth Towne de pe pagina de titlu, blănurile de 500 de dolari și pușca de 50 de dolari din exemplul eschimosului, cele 17 capitole).
 
 ## Licență
 
