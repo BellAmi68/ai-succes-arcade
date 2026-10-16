@@ -460,14 +460,187 @@
     ]);
   }
 
+  /* Atenție: urmărești secundarul unui ceas; când vârful se aprinde, apeși butonul.
+     Notificările false trebuie ignorate. Scorul (ultimul și recordul) stă doar în localStorage. */
+  var SVGNS = "http://www.w3.org/2000/svg";
+  function svgEl(tag, attrs) {
+    var n = document.createElementNS(SVGNS, tag);
+    Object.keys(attrs || {}).forEach(function (k) { n.setAttribute(k, attrs[k]); });
+    return n;
+  }
+  function gameAttention(G) {
+    var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var S = G.semnal || {};
+    var gapMin = (S.intervalMin || 4) * 1000, gapMax = (S.intervalMax || 9) * 1000, win = S.durata || 1100;
+    function saved() { return state.jocuri[G.id] || {}; }
+
+    /* cadranul */
+    var svg = svgEl("svg", { viewBox: "0 0 200 200", class: "dial", "aria-hidden": "true" });
+    svg.appendChild(svgEl("circle", { cx: 100, cy: 100, r: 92, class: "dial-face" }));
+    for (var t = 0; t < 60; t++) {
+      var big = t % 5 === 0, a = t * 6 * Math.PI / 180;
+      svg.appendChild(svgEl("line", {
+        x1: 100 + Math.sin(a) * (big ? 74 : 80), y1: 100 - Math.cos(a) * (big ? 74 : 80),
+        x2: 100 + Math.sin(a) * 86, y2: 100 - Math.cos(a) * 86, class: big ? "tick big" : "tick"
+      }));
+    }
+    var hand = svgEl("g", { class: "hand" });
+    hand.appendChild(svgEl("line", { x1: 100, y1: 116, x2: 100, y2: 26, class: "hand-line" }));
+    var tip = svgEl("circle", { cx: 100, cy: 26, r: 7, class: "hand-tip" });
+    hand.appendChild(tip);
+    svg.appendChild(hand);
+    svg.appendChild(svgEl("circle", { cx: 100, cy: 100, r: 5, class: "hand-hub" }));
+
+    var dur = el("select", { id: "joc-" + G.id + "-durata" }, G.durate.map(function (d) {
+      return el("option", { value: String(d), text: d < 60 ? d + " de secunde" : (d / 60) + (d === 60 ? " minut" : " minute") });
+    }));
+    var clock = el("p", { class: "att-time", "aria-live": "off", text: "" });
+    var press = el("button", { class: "btn att-press", type: "button", text: "Am văzut!", disabled: true });
+    var start = el("button", { class: "btn", type: "button", text: "Pornește" });
+    var stop = el("button", { class: "btn ghost small", type: "button", text: "Oprește", disabled: true });
+    var stage = el("div", { class: "att-stage" }, [svg, el("div", { class: "att-toasts", "aria-hidden": "true" })]);
+    var toasts = stage.lastChild;
+    var out = el("div", { class: "feedback", role: "status" });
+    var best = el("p", { class: "small muted" });
+
+    var run = null;
+    function rnd(a, b) { return a + Math.random() * (b - a); }
+    function fmt(ms) { var s = Math.max(0, Math.ceil(ms / 1000)); return Math.floor(s / 60) + ":" + ("0" + (s % 60)).slice(-2); }
+    function showBest() {
+      var d = saved();
+      best.textContent = d.record !== undefined
+        ? "Recordul tău pe acest dispozitiv: " + d.record + " puncte" + (d.ultim ? " · ultima rundă: " + d.ultim.puncte + " puncte" : "") + "."
+        : "Încă nicio rundă jucată pe acest dispozitiv.";
+    }
+
+    function frame() {
+      if (!run) return;
+      var now = Date.now(), elapsed = now - run.t0;
+      var sec = reduced ? Math.floor(elapsed / 1000) : elapsed / 1000;
+      hand.setAttribute("transform", "rotate(" + ((sec * 6) % 360) + " 100 100)");
+      clock.textContent = "Timp rămas: " + fmt(run.len - elapsed);
+      if (run.lit && now > run.lit + win) { run.lit = 0; run.ratate++; tip.classList.remove("on"); }
+      if (!run.lit && now >= run.nextSig && run.len - elapsed > win) {
+        run.lit = now; run.semnale++; tip.classList.add("on");
+        run.nextSig = now + win + rnd(gapMin, gapMax);
+      }
+      if (now >= run.nextToast && run.len - elapsed > 2500) { toast(); run.nextToast = now + rnd(5000, 11000); }
+      if (elapsed >= run.len) { finish(true); return; }
+      run.raf = window.requestAnimationFrame(frame);
+    }
+    function toast() {
+      var msg = G.notificari[Math.floor(Math.random() * G.notificari.length)];
+      var open = el("button", { type: "button", tabindex: "-1", text: "Deschide" });
+      var box = el("div", { class: "att-toast" }, [el("span", { class: "att-toast-app", text: "● Notificare" }), el("span", { text: msg }), open]);
+      var r = run;
+      open.addEventListener("click", function () {
+        if (run !== r) return;
+        run.distras++;
+        box.classList.add("caught");
+        out.className = "feedback show bad";
+        out.textContent = "Te-a prins o notificare! Întoarce-te la secundar.";
+        setTimeout(function () { if (box.parentNode) box.parentNode.removeChild(box); }, 400);
+        press.focus();
+      });
+      toasts.appendChild(box);
+      setTimeout(function () {
+        if (box.parentNode && !box.classList.contains("caught")) { box.parentNode.removeChild(box); if (run === r) run.ignorate++; }
+      }, 3200);
+    }
+    function hit() {
+      if (!run) return;
+      if (run.lit) {
+        run.prinse++; run.lit = 0; tip.classList.remove("on");
+        out.className = "feedback show ok"; out.textContent = "Prins! (" + run.prinse + ")";
+      } else {
+        run.gol++;
+        out.className = "feedback show bad"; out.textContent = "Vârful nu era aprins. Privește secundarul, nu butonul.";
+      }
+    }
+    function begin() {
+      if (run) return;
+      toasts.innerHTML = "";
+      var now = Date.now();
+      run = { t0: now, len: Number(dur.value) * 1000, nextSig: now + rnd(gapMin, gapMax), nextToast: now + rnd(3000, 7000),
+        lit: 0, semnale: 0, prinse: 0, ratate: 0, gol: 0, distras: 0, ignorate: 0 };
+      start.disabled = true; dur.disabled = true; stop.disabled = false; press.disabled = false;
+      out.className = "feedback"; out.textContent = "";
+      wrap.classList.add("running");
+      press.focus();
+      LCS.announce("Exercițiul a început. Urmărește secundarul.");
+      run.raf = window.requestAnimationFrame(frame);
+    }
+    function finish(complete) {
+      var r = run;
+      if (!r) return;
+      window.cancelAnimationFrame(r.raf);
+      if (r.lit) r.ratate++;
+      run = null;
+      tip.classList.remove("on");
+      toasts.innerHTML = "";
+      start.disabled = false; dur.disabled = false; stop.disabled = true; press.disabled = true;
+      wrap.classList.remove("running");
+      start.textContent = "Joacă din nou";
+      if (!complete) {
+        out.className = "feedback show bad";
+        out.textContent = "Rundă oprită înainte de final; scorul nu s-a salvat.";
+        return;
+      }
+      var pts = Math.max(0, r.prinse * 10 - r.gol * 5 - r.distras * 5);
+      var d = saved();
+      var rec = d.record === undefined || pts > d.record;
+      state.jocuri[G.id] = { gata: true, record: rec ? pts : d.record, ultim: { puncte: pts, prinse: r.prinse, semnale: r.semnale, gol: r.gol, distras: r.distras, ignorate: r.ignorate, secunde: r.len / 1000 } };
+      save();
+      out.className = "feedback show ok";
+      out.innerHTML = "";
+      out.appendChild(el("strong", { text: (rec ? "Record nou: " : "Gata: ") + pts + " puncte. " }));
+      out.appendChild(document.createTextNode(
+        "Ai prins " + r.prinse + " din " + r.semnale + " semnale · apăsări pe gol: " + r.gol +
+        " · notificări deschise: " + r.distras + " · notificări ignorate: " + r.ignorate + ". " + (G.notaFinal || "")));
+      showBest();
+      LCS.announce("Exercițiu încheiat. " + pts + " puncte.");
+    }
+
+    press.addEventListener("click", hit);
+    start.addEventListener("click", begin);
+    stop.addEventListener("click", function () { finish(false); });
+    document.addEventListener("keydown", function (e) {
+      if (!run || (e.key !== " " && e.code !== "Space")) return;
+      if (document.activeElement === press) return; // butonul primește deja spațiul ca „click”
+      e.preventDefault();
+      hit();
+    });
+    document.addEventListener("visibilitychange", function () { if (document.hidden && run) finish(false); });
+
+    hand.setAttribute("transform", "rotate(0 100 100)");
+    clock.textContent = "Timp: " + fmt(Number(G.durate[0]) * 1000);
+    dur.addEventListener("change", function () { clock.textContent = "Timp: " + fmt(Number(dur.value) * 1000); });
+    showBest();
+
+    var wrap = el("div", { class: "card att", id: "joc-" + G.id }, [
+      el("h3", { text: G.titlu }),
+      el("p", { class: "muted", text: G.instructiuni }),
+      G.citat ? quote(G.citat) : null,
+      el("div", { class: "att-controls" }, [
+        el("div", { class: "field" }, [el("label", { for: "joc-" + G.id + "-durata", text: "Durata" }), dur]),
+        el("div", { class: "btn-row" }, [start, stop])
+      ]),
+      stage, clock, el("div", { class: "btn-row att-press-row" }, [press]),
+      out, best,
+      el("p", { class: "small muted", text: "Punctaj: +10 pentru fiecare semnal prins, −5 pentru o apăsare pe gol, −5 pentru o notificare deschisă. Dacă schimbi fila, runda se oprește." })
+    ]);
+    return wrap;
+  }
+
   function jocuri() {
     var box = el("div", { class: "games" });
     C.jocuri.forEach(function (G) {
       if (G.tip === "ordonare") box.appendChild(gameOrder(G));
       else if (G.tip === "sapa") box.appendChild(gameDig(G));
       else if (G.tip === "potrivire") box.appendChild(gameMatch(G));
+      else if (G.tip === "atentie") box.appendChild(gameAttention(G));
     });
-    return section("jocuri", 3, "Mini-jocuri", "Două jocuri scurte pentru fixarea poveștii și a ideilor.", box);
+    return section("jocuri", 3, "Mini-jocuri", C.jocuriIntro || "Două jocuri scurte pentru fixarea poveștii și a ideilor.", box);
   }
 
   /* 4. Reflecție + aplică azi */
@@ -625,6 +798,132 @@
     ]);
   }
 
+  /* Opțional (aplicaAzi.provocare): 7 zile, câte un exercițiu cu cronometru, o listă de bifat și o notiță pe zi.
+     Totul în state.aplica._provocare = { bifate: { "0": true }, note: { "0": "…" } }. */
+  function provocareDone(P) {
+    var b = (state.aplica._provocare && state.aplica._provocare.bifate) || {};
+    return P.zile.map(function (_, i) { return i; }).filter(function (i) { return b[i]; });
+  }
+  function provocare(P, resets) {
+    function get() {
+      var p = state.aplica._provocare || (state.aplica._provocare = {});
+      p.bifate = p.bifate || {}; p.note = p.note || {};
+      return p;
+    }
+    var total = (P.minute || 5) * 60 * 1000;
+    var timer = { zi: 0, ramas: total, pornit: 0, id: null };
+    var face = el("p", { class: "timer-face", role: "timer", "aria-live": "off" });
+    var label = el("p", { class: "timer-day" });
+    var go = el("button", { class: "btn", type: "button", text: "Pornește" });
+    var reset = el("button", { class: "btn ghost small", type: "button", text: "De la capăt" });
+    var msg = el("p", { class: "small", role: "status" });
+    var list = el("ol", { class: "challenge" });
+    var count = el("p", { class: "score" });
+
+    function fmt(ms) { var s = Math.max(0, Math.ceil(ms / 1000)); return Math.floor(s / 60) + ":" + ("0" + (s % 60)).slice(-2); }
+    function left() { return timer.pornit ? timer.ramas - (Date.now() - timer.pornit) : timer.ramas; }
+    function paint() {
+      face.textContent = fmt(left());
+      label.textContent = "Ziua " + (timer.zi + 1) + " · " + P.zile[timer.zi].titlu;
+      go.textContent = timer.pornit ? "Pauză" : (timer.ramas < total ? "Continuă" : "Pornește");
+    }
+    function tick() {
+      if (left() <= 0) {
+        clearInterval(timer.id); timer.id = null; timer.pornit = 0; timer.ramas = total;
+        get().bifate[timer.zi] = true;
+        save();
+        drawList();
+        paint();
+        face.textContent = "0:00";
+        msg.textContent = "Gata! Ziua " + (timer.zi + 1) + " e bifată. Notează în două cuvinte ce ai observat.";
+        LCS.announce("Timpul s-a terminat. Ziua " + (timer.zi + 1) + " e bifată.");
+        beep();
+        var n = list.querySelector("#prov-nota-" + timer.zi);
+        if (n) n.focus();
+        return;
+      }
+      paint();
+    }
+    function beep() {
+      try {
+        var Ctx = window.AudioContext || window.webkitAudioContext;
+        if (!Ctx) return;
+        var ctx = new Ctx(), o = ctx.createOscillator(), g = ctx.createGain();
+        o.frequency.value = 660; g.gain.value = 0.08;
+        o.connect(g); g.connect(ctx.destination);
+        o.start(); o.stop(ctx.currentTime + 0.4);
+        o.onended = function () { ctx.close(); };
+      } catch (e) { /* fără sunet */ }
+    }
+    function pause() {
+      if (!timer.pornit) return;
+      timer.ramas = left(); timer.pornit = 0;
+      clearInterval(timer.id); timer.id = null;
+    }
+    function pick(i) {
+      pause();
+      timer.zi = i; timer.ramas = total;
+      msg.textContent = "";
+      paint();
+      drawList();
+      face.scrollIntoView({ block: "nearest" });
+      go.focus();
+    }
+    go.addEventListener("click", function () {
+      if (timer.pornit) { pause(); paint(); return; }
+      timer.pornit = Date.now();
+      msg.textContent = "";
+      timer.id = setInterval(tick, 250);
+      paint();
+    });
+    reset.addEventListener("click", function () { pause(); timer.ramas = total; msg.textContent = ""; paint(); });
+
+    function drawList() {
+      var p = state.aplica._provocare || {};
+      var b = p.bifate || {}, notes = p.note || {};
+      list.innerHTML = "";
+      P.zile.forEach(function (z, i) {
+        var box = el("input", { type: "checkbox", id: "prov-zi-" + i, checked: !!b[i] });
+        box.addEventListener("change", function () {
+          if (box.checked) get().bifate[i] = true; else delete get().bifate[i];
+          save();
+          drawList();
+          var again = document.getElementById("prov-zi-" + i);
+          if (again) again.focus();
+        });
+        var note = el("input", { type: "text", id: "prov-nota-" + i, placeholder: "Ce am observat (opțional)" });
+        note.value = notes[i] || "";
+        note.addEventListener("input", function () { get().note[i] = note.value; save(); });
+        list.appendChild(el("li", { class: (b[i] ? "done" : "") + (timer.zi === i ? " current" : "") }, [
+          el("div", { class: "challenge-head" }, [
+            box,
+            el("label", { for: "prov-zi-" + i }, [el("strong", { text: "Ziua " + (i + 1) + " · " + z.titlu }), z.sursa ? el("span", { class: "small muted", text: z.sursa }) : null])
+          ]),
+          el("p", { text: z.text }),
+          el("div", { class: "challenge-foot" }, [
+            el("button", { class: "btn secondary small", type: "button", text: timer.zi === i ? "Ziua din cronometru" : "Pune în cronometru", disabled: timer.zi === i, onclick: function () { pick(i); } }),
+            el("label", { class: "sr-only", for: "prov-nota-" + i, text: "Notița pentru ziua " + (i + 1) }),
+            note
+          ])
+        ]));
+      });
+      var n = provocareDone(P).length;
+      count.textContent = "Zile bifate: " + n + " din " + P.zile.length + (n === P.zile.length ? " — provocare încheiată!" : "");
+    }
+    resets.push(function () { pause(); timer.zi = 0; timer.ramas = total; msg.textContent = ""; paint(); drawList(); });
+    paint();
+    drawList();
+
+    return el("div", { class: "tool", id: "provocare" }, [
+      el("h3", { text: P.titlu }),
+      P.citat ? quote(P.citat) : null,
+      P.instructiuni ? el("p", { class: "small muted", text: P.instructiuni }) : null,
+      el("div", { class: "timer" }, [label, face, el("div", { class: "btn-row" }, [go, reset]), msg]),
+      count,
+      list
+    ]);
+  }
+
   function reflectie() {
     var R = C.reflectie, A = C.aplicaAzi;
     var resets = [];
@@ -670,6 +969,11 @@
         var c = calcSummary(A.calculator);
         if (c) out.push([A.calculator.etichetaCartonas || "Calculul meu", c]);
       }
+      if (A.provocare) {
+        var zile = provocareDone(A.provocare);
+        if (zile.length) out.push([A.provocare.etichetaCartonas || "Provocarea de 7 zile", zile.length + " din " + A.provocare.zile.length + " zile bifate: " +
+          zile.map(function (i) { return A.provocare.zile[i].titlu; }).join(", ")]);
+      }
       A.campuri.forEach(function (f) {
         var v = (state.aplica[f.id] || "").trim();
         if (v) out.push([f.eticheta.replace(/^\d+\.\s*/, ""), v]);
@@ -708,6 +1012,7 @@
       el("p", { text: A.intro }),
       A.calculator ? calculator(A.calculator, resets) : null,
       A.jurnal && C.virtuti ? jurnal(A.jurnal, resets) : null,
+      A.provocare ? provocare(A.provocare, resets) : null,
       A.titluCampuri ? el("h4", { class: "tool-title", text: A.titluCampuri }) : null,
       steps,
       el("div", { class: "btn-row no-print" }, [

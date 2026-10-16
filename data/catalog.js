@@ -81,10 +81,10 @@ window.CATALOG = [
     autor: "Theron Q. Dumont",
     an: "1916",
     grup: "international",
-    stare: "curand",
-    url: "",
+    stare: "activ",
+    url: "carti/the-power-of-concentration/",
     culoare: "#33507a",
-    teaser: "Exerciții vechi de un secol pentru atenție — testate pe telefonul de azi."
+    teaser: "Exerciții vechi de un secol pentru atenție, testate pe telefonul de azi. Deschide 5 lacăte, urmărește secundarul printre notificări false și află ce sfaturi rezistă."
   },
   {
     id: "cinci-paini",

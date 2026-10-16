@@ -4,7 +4,7 @@ Arcadă educativă în limba română cu clasici ai dezvoltării personale din d
 
 1. **Dosarul de indicii**: context, rezumat, citate scurte, glosar
 2. **Breakout**: 4–5 lacăte; fiecare se deschide cu răspunsul corect **și** citatul care îl dovedește
-3. **Două mini-jocuri**: „ordonare” (pune povestea în ordine), „sapă” (mina de idei) sau „potrivire” (perechi)
+3. **Două mini-jocuri**: „ordonare” (pune povestea în ordine), „sapă” (mina de idei), „potrivire” (perechi) sau „atenție” (exercițiu jucabil cu cronometru)
 4. **Reflecție finală + „Aplică azi”**: exercițiu practic pentru adulți, cu un cartonaș care se poate copia sau tipări
 5. **Fișa profesorului**: plan pentru o oră de 50 de minute, fișă de lucru tipăribilă, barem și discuție critică
 
@@ -37,6 +37,7 @@ carti/
   the-art-of-money-getting/    Camera pentru P. T. Barnum (aceeași structură)
   the-science-of-getting-rich/ Camera pentru Wallace D. Wattles (aceeași structură)
   the-way-to-wealth/           Camera pentru Benjamin Franklin (aceeași structură)
+  the-power-of-concentration/  Camera pentru Theron Q. Dumont / W. W. Atkinson (aceeași structură)
   _sablon/                     Șablon gol pentru o carte nouă
 tools/
   verifica-camera.js           Verificare automată a unui data.js (Node.js)
@@ -58,9 +59,10 @@ Scripturile sunt clasice (nu module ES), așa că site-ul merge și deschis dire
    - `citate`: banca de citate. Fiecare are `ro` (traducerea noastră), `en` (originalul) și `loc` (unde apare în text). Pentru autorii români, pune textul original în `ro` și lasă `en: ""`.
    - `dosar`: fișele de indicii. În `html` poți insera un citat cu `@@citat:cheie@@`.
    - `breakout.lacate`: pentru fiecare lacăt pui întrebarea, 3 opțiuni, indexul celei corecte, 3 citate (unul corect, două capcane), două indicii (răspuns greșit / citat greșit), explicația și litera primită. Literele tuturor lacătelor trebuie să formeze `breakout.cuvant`.
-   - `jocuri`: tipurile disponibile sunt `"ordonare"` (`elemente` = lista în ordinea corectă; motorul o amestecă), `"sapa"` (`elemente` = `{ text, da, explicatie }`) și `"potrivire"` (`elemente` = `{ stanga, dreapta, original?, explicatie? }`; motorul amestecă variantele din dreapta, iar fișa profesorului primește automat cheia).
+   - `jocuri`: tipurile disponibile sunt `"ordonare"` (`elemente` = lista în ordinea corectă; motorul o amestecă), `"sapa"` (`elemente` = `{ text, da, explicatie }`), `"potrivire"` (`elemente` = `{ stanga, dreapta, original?, explicatie? }`; motorul amestecă variantele din dreapta, iar fișa profesorului primește automat cheia) și `"atentie"` (urmărești secundarul unui ceas și apeși când vârful se aprinde, ignorând notificări false; `durate` = secunde, `semnal` = `{ intervalMin, intervalMax, durata }`, `notificari` = texte, `citat?`; recordul se păstrează doar în `localStorage`).
    - `reflectie`, `aplicaAzi`, `profesor`: texte simple. Fișa profesorului se generează automat din ele.
    - Opțional, în `aplicaAzi`: `calculator` (o cheltuială mică recurentă socotită pe un an; `frecvente` = `{ eticheta, peAn }`) și `jurnal` (tabel săptămânal tipăribil, după carnețelul lui Franklin; are nevoie de lista `virtuti` = `{ id, nume, ro }` la nivelul camerei și de 7 `zile`). Model: `carti/the-way-to-wealth/data.js`.
+   - Opțional, în `aplicaAzi`: `provocare` (7 zile, câte un exercițiu cu cronometru; `minute`, `zile` = `{ titlu, sursa?, text }`, `citat?`). Bifele și notițele zilnice stau în `localStorage`, iar fișa profesorului primește automat o pagină tipăribilă. Model: `carti/the-power-of-concentration/data.js`.
    - `sursa` poate fi un obiect `{ nume, url }` sau o listă de astfel de obiecte, când camera folosește mai multe texte.
 
 3. **Actualizează textele fixe** din `index.html` și `fisa.html` ale camerei: `<title>`, `description` și nota din subsol (marcate cu TITLU / AUTOR / DESCRIERE).
@@ -71,7 +73,7 @@ Scripturile sunt clasice (nu module ES), așa că site-ul merge și deschis dire
    ```bash
    node tools/verifica-camera.js carti/<id>/data.js
    ```
-   Scriptul verifică citatele referite, indexurile răspunsurilor, literele față de cuvântul-cheie, tipurile de joc și lungimea citatelor.
+   Scriptul verifică citatele referite, indexurile răspunsurilor, literele față de cuvântul-cheie, tipurile de joc și lungimea citatelor. Cu `--sursa Surse/<text>.txt` verifică în plus că fiecare câmp `en` (și fiecare `original` din jocuri) apare exact în textul sursă; spațierea nu contează, iar `[…]` desparte fragmentele.
 
 6. **Testează local:** `python3 -m http.server` în rădăcină, apoi deschide `http://localhost:8000`. Încearcă pe un ecran îngust (aproximativ 390px), pornește camera, deschide toate lacătele și tipărește fișa.
 
@@ -104,6 +106,10 @@ Toate câmpurile `en` din `carti/the-science-of-getting-rich/data.js` se regăse
 ## Citatele din Franklin: verificate
 
 Camera `carti/the-way-to-wealth/` folosește doar două porțiuni din surse: din `Surse/way-to-wealth.txt` (Project Gutenberg #43855, ediția W. & T. Darton, Londra, 1810) doar discursul lui Father Abraham și rama lui Poor Richard (de la „COURTEOUS READER” la semnătura „RICHARD SAUNDERS”), fără reclamele și introducerea editorului; din `Surse/franklin-autobiography.txt` (Project Gutenberg #20203) doar capitolul IX, „Plan for Attaining Moral Perfection” (cele 13 virtuți și carnețelul). Toate câmpurile `en` (citate, precepte, proverbe din jocuri) au fost căutate automat în aceste porțiuni și se regăsesc exact, cu ortografia sursei („expences”, „employ'd”, „extreams”, „cloaths”); singurele diferențe sunt spațierea și liniuțele de subliniere din Gutenberg, care marchează doar italicul. Omisiunile sunt marcate cu `[…]`. Traducerile sunt proprii. Castitatea (virtutea a 12-a) e pomenită doar cu numele și lipsește din jocuri și din tabel (vezi `profesor.atentie`).
+
+## Citatele din Dumont: verificate
+
+Toate câmpurile `en` din `carti/the-power-of-concentration/data.js` și toate frazele `original` din jocul de potrivire se regăsesc exact în `Surse/power-of-concentration.txt` (Project Gutenberg #1570), verificat automat cu `node tools/verifica-camera.js carti/the-power-of-concentration/data.js --sursa Surse/power-of-concentration.txt`. Omisiunile sunt marcate cu `[…]`. Traducerile sunt proprii. Camera folosește doar nucleul practic (lecțiile I, II, VI, IX, XIV, XV, XIX, XX); lecțiile despre influențarea altor oameni prin forța gândului nu au lacăte și apar doar ca exemplu critic. Maximele despre obicei din lecția a IX-a sunt preluate în carte, fără atribuire, din William James (*The Principles of Psychology*, 1890), lucru semnalat în dosar și în fișa profesorului.
 
 ## Licență
 
