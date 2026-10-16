@@ -28,15 +28,15 @@ window.CATALOG = [
   },
   {
     id: "the-science-of-getting-rich",
-    titlu: "Știința de a te îmbogăți",
+    titlu: "Știința de a deveni bogat",
     titluOriginal: "The Science of Getting Rich",
     autor: "Wallace D. Wattles",
     an: "1910",
     grup: "international",
-    stare: "curand",
-    url: "",
+    stare: "activ",
+    url: "carti/the-science-of-getting-rich/",
     culoare: "#8a5a1c",
-    teaser: "O carte-manifest despre creație vs. competiție — de citit cu creionul critic în mână."
+    teaser: "O carte din 1910 promite că „eșecul e imposibil”. Deschide 5 lacăte și află ce idei rezistă și ce îi lipsește promisiunii."
   },
   {
     id: "the-art-of-money-getting",
