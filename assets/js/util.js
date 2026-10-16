@@ -1,4 +1,4 @@
-/* Lecturi care schimbă — utilitare comune (fără dependențe).
+/* Cărți care schimbă vieți — utilitare comune (fără dependențe).
    Expune obiectul global window.LCS. */
 (function () {
   "use strict";
