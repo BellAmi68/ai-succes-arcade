@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pagină negăsită · Lecturi care schimbă</title>
+  <style>
+    :root { --bg: #f5efe3; --ink: #1c2230; --accent: #0e6a70; }
+    @media (prefers-color-scheme: dark) { :root { --bg: #121620; --ink: #ece6d8; --accent: #4cc0c6; } }
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: var(--bg); color: var(--ink); font: 18px/1.6 system-ui, sans-serif; padding: 16px; text-align: center; }
+    h1 { font-family: Georgia, serif; }
+    a { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Aici nu e niciun diamant.</h1>
+    <p>Pagina căutată nu există. Ca la Ali Hafed, poate că ce cauți e mai aproape decât crezi.</p>
+    <p><a id="acasa" href="/">Înapoi la pagina de start</a></p>
+  </main>
+  <script>
+    // Pe GitHub Pages (site de proiect), pagina de start e /<repository>/, nu rădăcina domeniului.
+    if (/\.github\.io$/.test(location.hostname)) {
+      var seg = location.pathname.split("/")[1];
+      if (seg) document.getElementById("acasa").href = "/" + seg + "/";
+    }
+  </script>
+</body>
+</html>
