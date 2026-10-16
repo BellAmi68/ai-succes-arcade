@@ -69,10 +69,10 @@ window.CATALOG = [
     autor: "Elbert Hubbard",
     an: "1899",
     grup: "international",
-    stare: "curand",
-    url: "",
+    stare: "activ",
+    url: "carti/a-message-to-garcia/",
     culoare: "#2f5d3a",
-    teaser: "Un eseu scurt despre inițiativă: ce faci când nimeni nu-ți explică pasul următor?"
+    teaser: "Un ofițer primește o scrisoare pentru un general ascuns în munții Cubei și nu întreabă „Unde e?”. Deschide 5 lacăte, alege cine duce mesajul și află unde se termină inițiativa și începe ascultarea oarbă."
   },
   {
     id: "the-power-of-concentration",

@@ -49,7 +49,14 @@ if (letters.sort().join("") !== norm(B.cuvant).split("").sort().join("")) {
 }
 
 (C.jocuri || []).forEach((g) => {
-  if (["ordonare", "sapa", "potrivire", "atentie", "gradina"].indexOf(g.tip) === -1) err(`joc „${g.id}”: tip necunoscut ${g.tip}`);
+  if (["ordonare", "sapa", "potrivire", "atentie", "gradina", "scenarii"].indexOf(g.tip) === -1) err(`joc „${g.id}”: tip necunoscut ${g.tip}`);
+  if (g.tip === "scenarii") {
+    (g.elemente || []).forEach((e, i) => {
+      if (!e.situatie || !e.explicatie || (e.reactii || []).length < 2) err(`joc „${g.id}”: elementul ${i + 1} are nevoie de „situatie”, cel puțin două „reactii” și „explicatie”`);
+      else if (!(e.corect >= 0 && e.corect < e.reactii.length)) err(`joc „${g.id}”, elementul ${i + 1}: index „corect” invalid`);
+      if (e.citat && !quotes[e.citat]) err(`joc „${g.id}”, elementul ${i + 1}: citat inexistent ${e.citat}`);
+    });
+  }
   if (g.tip === "gradina") {
     if ((g.etichete || []).length !== 2) err(`joc „${g.id}”: „etichete” trebuie să aibă două texte (sămânță, buruiană)`);
     (g.elemente || []).forEach((e, i) => {
@@ -70,7 +77,8 @@ if (letters.sort().join("") !== norm(B.cuvant).split("").sort().join("")) {
 });
 
 const A = C.aplicaAzi || {};
-[A.calculator, A.jurnal, A.provocare, A.jurnalGanduri].forEach((t) => {
+if (A.bifat && !((A.bifat.pasi || []).length && A.bifat.pasi.every((p) => p.text))) err("aplicaAzi.bifat: „pasi” are nevoie de cel puțin un pas cu „text”");
+[A.calculator, A.jurnal, A.provocare, A.jurnalGanduri, A.bifat].forEach((t) => {
   if (t && t.citat && !quotes[t.citat]) err(`aplicaAzi: citat inexistent ${t.citat}`);
 });
 if (A.calculator && !(A.calculator.frecvente || []).every((f) => f.eticheta && f.peAn > 0)) err("aplicaAzi.calculator: fiecare frecvență are nevoie de „eticheta” și „peAn” > 0");

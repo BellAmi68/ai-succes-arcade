@@ -4,7 +4,7 @@ Escape room de lectură în limba română, cu clasici ai dezvoltării personale
 
 1. **Dosarul de indicii**: context, rezumat, citate scurte, glosar
 2. **Breakout**: 4–5 lacăte; fiecare se deschide cu răspunsul corect **și** citatul care îl dovedește
-3. **Două mini-jocuri**: „ordonare” (pune povestea în ordine), „sapă” (mina de idei), „potrivire” (perechi), „atenție” (exercițiu jucabil cu cronometru) sau „grădina” (sortezi gânduri în semințe și buruieni)
+3. **Două mini-jocuri**: „ordonare” (pune povestea în ordine), „sapă” (mina de idei), „potrivire” (perechi), „atenție” (exercițiu jucabil cu cronometru), „grădina” (sortezi gânduri în semințe și buruieni) sau „scenarii” (alegi reacția potrivită într-o situație de azi)
 4. **Reflecție finală + „Aplică azi”**: exercițiu practic pentru adulți, cu un cartonaș care se poate copia sau tipări
 5. **Fișa profesorului**: plan pentru o oră de 50 de minute, fișă de lucru tipăribilă, barem și discuție critică
 
@@ -41,6 +41,7 @@ carti/
   the-power-of-concentration/  Camera pentru Theron Q. Dumont / W. W. Atkinson (aceeași structură)
   as-a-man-thinketh/           Camera pentru James Allen (aceeași structură)
   the-psychology-of-salesmanship/  Camera pentru William Walker Atkinson (aceeași structură)
+  a-message-to-garcia/         Camera pentru Elbert Hubbard (aceeași structură)
   _sablon/                     Șablon gol pentru o carte nouă
 tools/
   verifica-camera.js           Verificare automată a unui data.js (Node.js)
@@ -62,11 +63,12 @@ Scripturile sunt clasice (nu module ES), așa că site-ul merge și deschis dire
    - `citate`: banca de citate. Fiecare are `ro` (traducerea noastră), `en` (originalul) și `loc` (unde apare în text). Pentru autorii români, pune textul original în `ro` și lasă `en: ""`.
    - `dosar`: fișele de indicii. În `html` poți insera un citat cu `@@citat:cheie@@`.
    - `breakout.lacate`: pentru fiecare lacăt pui întrebarea, 3 opțiuni, indexul celei corecte, 3 citate (unul corect, două capcane), două indicii (răspuns greșit / citat greșit), explicația și litera primită. Literele tuturor lacătelor trebuie să formeze `breakout.cuvant`.
-   - `jocuri`: tipurile disponibile sunt `"ordonare"` (`elemente` = lista în ordinea corectă; motorul o amestecă), `"sapa"` (`elemente` = `{ text, da, explicatie }`), `"potrivire"` (`elemente` = `{ stanga, dreapta, original?, explicatie? }`; motorul amestecă variantele din dreapta, iar fișa profesorului primește automat cheia) și `"atentie"` (urmărești secundarul unui ceas și apeși când vârful se aprinde, ignorând notificări false; `durate` = secunde, `semnal` = `{ intervalMin, intervalMax, durata }`, `notificari` = texte, `citat?`; recordul se păstrează doar în `localStorage`) și `"gradina"` (`etichete` = două texte, de exemplu `["Sămânță", "Buruiană"]`; `elemente` = `{ text, samanta, explicatie, citat? }`; după fiecare alegere apar justificarea și citatul din banca de citate, iar fișa profesorului primește automat cheia).
+   - `jocuri`: tipurile disponibile sunt `"ordonare"` (`elemente` = lista în ordinea corectă; motorul o amestecă), `"sapa"` (`elemente` = `{ text, da, explicatie }`), `"potrivire"` (`elemente` = `{ stanga, dreapta, original?, explicatie? }`; motorul amestecă variantele din dreapta, iar fișa profesorului primește automat cheia) și `"atentie"` (urmărești secundarul unui ceas și apeși când vârful se aprinde, ignorând notificări false; `durate` = secunde, `semnal` = `{ intervalMin, intervalMax, durata }`, `notificari` = texte, `citat?`; recordul se păstrează doar în `localStorage`), `"gradina"` (`etichete` = două texte, de exemplu `["Sămânță", "Buruiană"]`; `elemente` = `{ text, samanta, explicatie, citat? }`; după fiecare alegere apar justificarea și citatul din banca de citate, iar fișa profesorului primește automat cheia) și `"scenarii"` (`elemente` = `{ situatie, reactii, corect, explicatie, citat? }`; pentru fiecare situație alegi una dintre `reactii`, apoi apar reacția potrivită, justificarea și citatul-dovadă; fișa profesorului primește automat cheia; model: `carti/a-message-to-garcia/data.js`).
    - `reflectie`, `aplicaAzi`, `profesor`: texte simple. Fișa profesorului se generează automat din ele.
    - Opțional, în `aplicaAzi`: `calculator` (o cheltuială mică recurentă socotită pe un an; `frecvente` = `{ eticheta, peAn }`) și `jurnal` (tabel săptămânal tipăribil, după carnețelul lui Franklin; are nevoie de lista `virtuti` = `{ id, nume, ro }` la nivelul camerei și de 7 `zile`). Model: `carti/the-way-to-wealth/data.js`.
    - Opțional, în `aplicaAzi`: `provocare` (7 zile, câte un exercițiu cu cronometru; `minute`, `zile` = `{ titlu, sursa?, text }`, `citat?`). Bifele și notițele zilnice stau în `localStorage`, iar fișa profesorului primește automat o pagină tipăribilă. Model: `carti/the-power-of-concentration/data.js`.
    - Opțional, în `aplicaAzi`: `jurnalGanduri` (7 zile cu același gând negativ recurent, reformulat zilnic; `zile` = `{ titlu, text, citat? }`, `exempluGand?`, `notaSiguranta?`, `citat?`). Gândul și reformulările stau doar în `localStorage`, ultima reformulare intră în cartonaș, iar fișa profesorului primește automat o pagină tipăribilă. Model: `carti/as-a-man-thinketh/data.js`.
+   - Opțional, în `aplicaAzi`: `bifat` (o listă scurtă de pași de bifat azi; `pasi` = `{ text, hint? }`, `titlu`, `instructiuni?`, `citat?`, `etichetaCartonas?`). Bifele stau doar în `localStorage`, pașii bifați intră în cartonaș, iar fișa profesorului primește lista tipăribilă după fișa elevului. Model: `carti/a-message-to-garcia/data.js`.
    - `sursa` poate fi un obiect `{ nume, url }` sau o listă de astfel de obiecte, când camera folosește mai multe texte.
 
 3. **Actualizează textele fixe** din `index.html` și `fisa.html` ale camerei: `<title>`, `description` și nota din subsol (marcate cu TITLU / AUTOR / DESCRIERE).
@@ -123,6 +125,10 @@ Toate câmpurile `en` din `carti/as-a-man-thinketh/data.js` și toate frazele `o
 ## Citatele din Atkinson: verificate
 
 Toate câmpurile `en` din `carti/the-psychology-of-salesmanship/data.js` se regăsesc exact în `Surse/psychology-of-salesmanship.txt` (Project Gutenberg #41510), verificat automat cu `node tools/verifica-camera.js carti/the-psychology-of-salesmanship/data.js --sursa Surse/psychology-of-salesmanship.txt`, cu ortografia și punctuația sursei (ghilimele drepte, liniuța dublă „--”). Liniuțele de subliniere din Gutenberg (italicul) sunt omise; omisiunile sunt marcate cu `[…]`. Traducerile sunt proprii. Camera folosește doar nucleul practic: capitolul I (vânzarea ca proces psihologic), capitolele II–III (mintea vânzătorului), capitolul VII (cele zece etape ale cumpărătorului, pe care le urmează lacătele și jocurile) și capitolul VIII (abordarea), plus câteva fraze din capitolele IV–VI, IX și X. Tipologia frenologică din capitolele IV–V și limbajul rasist sau condescendent al epocii apar doar în fișa „Pentru cititorul critic” și în `profesor.atentie`. Atkinson e același autor ca Theron Q. Dumont; cele două camere au linkuri una către cealaltă.
+
+## Citatele din Hubbard: verificate
+
+Toate câmpurile `en` din `carti/a-message-to-garcia/data.js` se regăsesc exact în `Surse/a-message-to-garcia.txt` (Project Gutenberg #17195, ediția Roycroft din 1914), verificat automat cu `node tools/verifica-camera.js carti/a-message-to-garcia/data.js --sursa Surse/a-message-to-garcia.txt`, cu ortografia și punctuația sursei (ghilimele drepte, liniuța dublă „--”). Omisiunile sunt marcate cu `[…]`. Traducerile sunt proprii. Pe lângă eseul din 1899, camera folosește cuvântul-înainte din 1914 („Apologia” și „Horse Sense”), maxima de după eseu și o frază din crezul „Life in Abundance”, toate din aceeași carte; locul fiecărui citat e precizat în `loc`. Eseul e scurt, dar susține 5 lacăte: cele 15 citate din lacăte (câte unul corect și două capcane) sunt toate diferite, iar fiecare situație din jocul „Cine duce mesajul?” are un citat-dovadă propriu. Cifra de 40 de milioane de exemplare și povestea răspândirii în Rusia și Japonia sunt ale lui Hubbard și sunt prezentate ca atare. Misiunea lui Rowan e dramatizată în eseu; diferențele față de faptele istorice sunt rezumate prudent în fișa „Ce s-a întâmplat de fapt”, iar limbajul dur al eseului e semnalat în `profesor.atentie`.
 
 ## Licență
 

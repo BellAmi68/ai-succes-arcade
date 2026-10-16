@@ -104,6 +104,19 @@
       ]));
     });
 
+    (C.jocuri || []).filter(function (g) { return g.tip === "scenarii"; }).forEach(function (g) {
+      w.appendChild(el("h3", { text: "Soluții · " + g.titlu }));
+      w.appendChild(el("table", {}, [
+        el("tbody", {}, g.elemente.map(function (e) {
+          var q = e.citat && C.citate[e.citat];
+          return el("tr", {}, [
+            el("td", { text: e.situatie }),
+            el("td", {}, [el("strong", { text: e.reactii[e.corect] }), q ? el("br") : null, q ? el("span", { class: "small", text: "„" + q.ro + "”" }) : null])
+          ]);
+        }))
+      ]));
+    });
+
     /* ---------- fișa elevului ---------- */
     var F = P.fisaElev;
     w.appendChild(h2(F.titlu, "fisa-elev", true));
@@ -114,6 +127,22 @@
       for (var k = 0; k < (it.linii || 3); k++) lines.push(el("div", { class: "lines" }));
       w.appendChild(el("div", { class: "item" }, [el("p", {}, [el("strong", { text: (i + 1) + ". " }), it.text])].concat(lines)));
     });
+
+    /* ---------- opțional: lista de bifat pentru azi, sub fișa elevului ---------- */
+    var BF = C.aplicaAzi && C.aplicaAzi.bifat;
+    if (BF) {
+      w.appendChild(h2(C.aplicaAzi.titlu, "bifat"));
+      if (BF.instructiuni) w.appendChild(el("p", { html: "<em>" + BF.instructiuni + "</em>" }));
+      w.appendChild(el("div", { class: "item" }, [el("p", {}, [el("strong", { text: "Sarcina mea:" })]), el("div", { class: "lines" }), el("div", { class: "lines" })]));
+      w.appendChild(el("table", {}, [
+        el("tbody", {}, BF.pasi.map(function (p, i) {
+          return el("tr", {}, [
+            el("td", { text: "☐" }),
+            el("td", {}, [el("strong", { text: "Pasul " + (i + 1) + " · " + p.text }), p.hint ? el("br") : null, p.hint ? el("span", { class: "small", text: p.hint }) : null])
+          ]);
+        }))
+      ]));
+    }
 
     /* ---------- opțional: provocarea de 7 zile, de dat acasă ---------- */
     var PV = C.aplicaAzi && C.aplicaAzi.provocare;
