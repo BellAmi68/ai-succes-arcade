@@ -90,6 +90,20 @@
       ]));
     });
 
+    (C.jocuri || []).filter(function (g) { return g.tip === "gradina"; }).forEach(function (g) {
+      var lbl = g.etichete || ["Sămânță", "Buruiană"];
+      w.appendChild(el("h3", { text: "Soluții · " + g.titlu }));
+      w.appendChild(el("table", {}, [
+        el("tbody", {}, g.elemente.map(function (e) {
+          var q = e.citat && C.citate[e.citat];
+          return el("tr", {}, [
+            el("td", { text: "„" + e.text + "”" }),
+            el("td", {}, [el("strong", { text: e.samanta ? lbl[0] : lbl[1] }), q ? el("br") : null, q ? el("span", { class: "small", text: "„" + q.ro + "”" }) : null])
+          ]);
+        }))
+      ]));
+    });
+
     /* ---------- fișa elevului ---------- */
     var F = P.fisaElev;
     w.appendChild(h2(F.titlu, "fisa-elev", true));
@@ -117,6 +131,26 @@
           ]);
         }))
       ]));
+    }
+
+    /* ---------- opțional: jurnalul de gânduri de 7 zile, de dat acasă ---------- */
+    var JG = C.aplicaAzi && C.aplicaAzi.jurnalGanduri;
+    if (JG) {
+      w.appendChild(h2(JG.titlu + " · jurnal pentru acasă", "jurnal-ganduri", true));
+      w.appendChild(el("div", { class: "name-line" }, [el("span", { text: "Nume (opțional):" }), el("span", { text: "Săptămâna:" })]));
+      w.appendChild(el("p", { html: "<em>Scrie o singură dată gândul negativ care îți revine des. Apoi, în fiecare zi, notează când a apărut și reformulează-l după indicația zilei. Reformularea nu e o minciună frumoasă: caută o variantă la fel de adevărată, dar care te ajută. Jurnalul e al tău și nu se predă.</em>" }));
+      w.appendChild(el("div", { class: "item" }, [el("p", {}, [el("strong", { text: "Gândul meu recurent:" })]), el("div", { class: "lines" }), el("div", { class: "lines" })]));
+      w.appendChild(el("table", {}, [
+        el("thead", {}, [el("tr", {}, [el("th", { text: "Ziua și indicația" }), el("th", { text: "Când a apărut" }), el("th", { text: "Reformularea mea" })])]),
+        el("tbody", {}, JG.zile.map(function (z, i) {
+          return el("tr", {}, [
+            el("td", {}, [el("strong", { text: "Ziua " + (i + 1) + " · " + z.titlu }), el("br"), el("span", { class: "small", text: z.text })]),
+            el("td", { class: "write-sm", text: "" }),
+            el("td", { class: "write", text: "" })
+          ]);
+        }))
+      ]));
+      if (JG.notaSiguranta) w.appendChild(el("p", { class: "privacy", text: JG.notaSiguranta }));
     }
 
     /* ---------- barem + citate ---------- */

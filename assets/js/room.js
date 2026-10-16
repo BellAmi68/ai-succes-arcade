@@ -632,6 +632,72 @@
     return wrap;
   }
 
+  /* Grădinarul: fiecare gând merge fie printre semințe, fie printre buruieni.
+     După alegere apar justificarea și citatul din text care o susține (elemente = { text, samanta, explicatie, citat? }). */
+  function gameGarden(G) {
+    var saved = (state.jocuri[G.id] && state.jocuri[G.id].alegeri) || {};
+    var lbl = G.etichete || ["Sămânță", "Buruiană"];
+    var list = el("ol", { class: "garden" });
+    var score = el("p", { class: "score", role: "status" });
+
+    function updateScore() {
+      var keys = Object.keys(saved);
+      var ok = keys.filter(function (k) { return saved[k] === G.elemente[k].samanta; }).length;
+      score.textContent = "Gânduri sortate: " + keys.length + " din " + G.elemente.length + " · corect: " + ok;
+      if (keys.length === G.elemente.length) {
+        score.textContent += ok === keys.length ? " — nicio buruiană n-a scăpat!" : " — gata! Citește justificările de la cele marcate cu roșu.";
+      }
+    }
+
+    G.elemente.forEach(function (item, i) {
+      var li = el("li");
+      function reveal() {
+        var ok = saved[i] === item.samanta;
+        li.className = (ok ? "right " : "wrong ") + (item.samanta ? "seed" : "weed");
+        li.innerHTML = "";
+        li.appendChild(el("p", { class: "thought", text: "„" + item.text + "”" }));
+        li.appendChild(el("p", { class: "verdict" }, [
+          el("strong", { text: (ok ? "✓ " : "✗ ") + (item.samanta ? lbl[0] : lbl[1]) + ". " }),
+          item.explicatie
+        ]));
+        if (item.citat) li.appendChild(quote(item.citat));
+      }
+      function answer(v) {
+        saved[i] = v;
+        reveal();
+        state.jocuri[G.id] = { alegeri: saved, gata: Object.keys(saved).length === G.elemente.length };
+        save();
+        updateScore();
+        LCS.announce((v === item.samanta ? "Corect. " : "Nu chiar. ") + (item.samanta ? lbl[0] : lbl[1]) + ". " + item.explicatie);
+      }
+      if (i in saved) {
+        reveal();
+      } else {
+        li.appendChild(el("p", { class: "thought", text: "„" + item.text + "”" }));
+        li.appendChild(el("div", { class: "garden-choices" }, [
+          el("button", { class: "btn small seed-btn", type: "button", text: "🌱 " + lbl[0], onclick: function () { answer(true); } }),
+          el("button", { class: "btn small weed-btn", type: "button", text: "🌿 " + lbl[1], onclick: function () { answer(false); } })
+        ]));
+      }
+      list.appendChild(li);
+    });
+    updateScore();
+
+    var reset = el("button", { class: "btn ghost small", type: "button", text: "Reia jocul" });
+    reset.addEventListener("click", function () {
+      delete state.jocuri[G.id];
+      save();
+      var fresh = gameGarden(G);
+      wrap.parentNode.replaceChild(fresh, wrap);
+    });
+    var wrap = el("div", { class: "card", id: "joc-" + G.id }, [
+      el("h3", { text: G.titlu }),
+      el("p", { class: "muted", text: G.instructiuni }),
+      list, score, el("div", { class: "btn-row" }, [reset])
+    ]);
+    return wrap;
+  }
+
   function jocuri() {
     var box = el("div", { class: "games" });
     C.jocuri.forEach(function (G) {
@@ -639,6 +705,7 @@
       else if (G.tip === "sapa") box.appendChild(gameDig(G));
       else if (G.tip === "potrivire") box.appendChild(gameMatch(G));
       else if (G.tip === "atentie") box.appendChild(gameAttention(G));
+      else if (G.tip === "gradina") box.appendChild(gameGarden(G));
     });
     return section("jocuri", 3, "Mini-jocuri", C.jocuriIntro || "Două jocuri scurte pentru fixarea poveștii și a ideilor.", box);
   }
@@ -924,6 +991,75 @@
     ]);
   }
 
+  /* Opțional (aplicaAzi.jurnalGanduri): același gând negativ recurent, urmărit 7 zile și reformulat zilnic.
+     Totul în state.aplica._ganduri = { gand: "…", zile: { "0": { cand: "…", nou: "…" } } }. */
+  function ganduriDone(J) {
+    var z = (state.aplica._ganduri && state.aplica._ganduri.zile) || {};
+    return J.zile.map(function (_, i) { return i; }).filter(function (i) { return z[i] && (z[i].nou || "").trim(); });
+  }
+  function jurnalGanduri(J, resets) {
+    function get() {
+      var g = state.aplica._ganduri || (state.aplica._ganduri = {});
+      g.zile = g.zile || {};
+      return g;
+    }
+    function day(i) { var z = get().zile; return z[i] || (z[i] = {}); }
+    var gand = el("textarea", { id: "gand-recurent", rows: "2", placeholder: J.exempluGand || "" });
+    gand.addEventListener("input", function () { get().gand = gand.value; save(); });
+    var count = el("p", { class: "score", role: "status" });
+    var list = el("ol", { class: "challenge thought-log" });
+
+    function drawCount() {
+      var n = ganduriDone(J).length;
+      count.textContent = "Zile completate: " + n + " din " + J.zile.length + (n === J.zile.length ? " — săptămână încheiată! Completează mai jos ce păstrezi." : "");
+    }
+    function draw() {
+      var d = state.aplica._ganduri || {};
+      var zile = d.zile || {};
+      gand.value = d.gand || "";
+      list.innerHTML = "";
+      J.zile.forEach(function (z, i) {
+        var v = zile[i] || {};
+        var cand = el("input", { type: "text", id: "gand-cand-" + i, placeholder: "situația, ora, ce s-a întâmplat înainte" });
+        cand.value = v.cand || "";
+        var nou = el("textarea", { id: "gand-nou-" + i, rows: "2" });
+        nou.value = v.nou || "";
+        var li = el("li", { class: (v.nou || "").trim() ? "done" : "" }, [
+          el("p", { class: "challenge-head" }, [el("strong", { text: "Ziua " + (i + 1) + " · " + z.titlu })]),
+          el("p", { text: z.text }),
+          z.citat ? quote(z.citat) : null,
+          el("div", { class: "field" }, [el("label", { for: "gand-cand-" + i, text: "Când a apărut gândul azi" }), cand]),
+          el("div", { class: "field" }, [el("label", { for: "gand-nou-" + i, text: "Reformularea mea" }), nou])
+        ]);
+        cand.addEventListener("input", function () { day(i).cand = cand.value; save(); });
+        nou.addEventListener("input", function () {
+          day(i).nou = nou.value;
+          save();
+          li.classList.toggle("done", !!nou.value.trim());
+          drawCount();
+        });
+        list.appendChild(li);
+      });
+      drawCount();
+    }
+    resets.push(draw);
+    draw();
+
+    return el("div", { class: "tool", id: "jurnal-ganduri" }, [
+      el("h3", { text: J.titlu }),
+      J.citat ? quote(J.citat) : null,
+      J.instructiuni ? el("p", { class: "small muted", text: J.instructiuni }) : null,
+      el("div", { class: "field" }, [
+        el("label", { for: "gand-recurent" }, ["Gândul negativ care îmi revine des", el("span", { class: "hint", text: "scrie-l exact cum sună în mintea ta; îl păstrezi toată săptămâna" })]),
+        gand
+      ]),
+      count,
+      list,
+      J.notaSiguranta ? el("p", { class: "privacy", text: J.notaSiguranta }) : null,
+      el("p", { class: "small no-print" }, [el("a", { href: "fisa.html#jurnal-ganduri", text: "Varianta pe hârtie a jurnalului e în fișa profesorului (se tipărește)." })])
+    ]);
+  }
+
   function reflectie() {
     var R = C.reflectie, A = C.aplicaAzi;
     var resets = [];
@@ -974,6 +1110,12 @@
         if (zile.length) out.push([A.provocare.etichetaCartonas || "Provocarea de 7 zile", zile.length + " din " + A.provocare.zile.length + " zile bifate: " +
           zile.map(function (i) { return A.provocare.zile[i].titlu; }).join(", ")]);
       }
+      if (A.jurnalGanduri) {
+        var g = state.aplica._ganduri || {};
+        if ((g.gand || "").trim()) out.push([A.jurnalGanduri.etichetaGand || "Gândul pe care l-am urmărit", g.gand.trim()]);
+        var gz = ganduriDone(A.jurnalGanduri);
+        if (gz.length) out.push([A.jurnalGanduri.etichetaCartonas || "Ultima mea reformulare", g.zile[gz[gz.length - 1]].nou.trim() + " (" + gz.length + " din " + A.jurnalGanduri.zile.length + " zile completate)"]);
+      }
       A.campuri.forEach(function (f) {
         var v = (state.aplica[f.id] || "").trim();
         if (v) out.push([f.eticheta.replace(/^\d+\.\s*/, ""), v]);
@@ -1013,6 +1155,7 @@
       A.calculator ? calculator(A.calculator, resets) : null,
       A.jurnal && C.virtuti ? jurnal(A.jurnal, resets) : null,
       A.provocare ? provocare(A.provocare, resets) : null,
+      A.jurnalGanduri ? jurnalGanduri(A.jurnalGanduri, resets) : null,
       A.titluCampuri ? el("h4", { class: "tool-title", text: A.titluCampuri }) : null,
       steps,
       el("div", { class: "btn-row no-print" }, [
