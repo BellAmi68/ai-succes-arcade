@@ -40,15 +40,15 @@ window.CATALOG = [
   },
   {
     id: "the-art-of-money-getting",
-    titlu: "Arta de a câștiga bani",
+    titlu: "Arta de a face bani",
     titluOriginal: "The Art of Money Getting",
     autor: "P. T. Barnum",
-    an: "1880",
+    an: "conferință, text tipărit în 1880",
     grup: "international",
-    stare: "curand",
-    url: "",
+    stare: "activ",
+    url: "carti/the-art-of-money-getting/",
     culoare: "#a2372a",
-    teaser: "Sfaturi practice de la cel mai faimos showman al secolului XIX."
+    teaser: "Cel mai faimos autor de farse al secolului XIX dă sfaturi despre bani și cinste. Deschide 5 lacăte și decide cât de mult îl crezi."
   },
   {
     id: "a-message-to-garcia",

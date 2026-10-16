@@ -327,7 +327,7 @@ a.book:hover { color: var(--ink); transform: translate(-2px, -2px); box-shadow: 
 .sheet { padding: 28px 0 40px; }
 .sheet h2 { margin-top: 1.4em; border-bottom: 2px solid var(--ink); padding-bottom: 6px; }
 .sheet table { width: 100%; border-collapse: collapse; margin: 10px 0 18px; font-size: .95rem; }
-.sheet th, .sheet td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+.sheet th, .sheet td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; overflow-wrap: anywhere; }
 .sheet th { background: var(--bg-2); }
 .sheet .item { margin: 0 0 18px; break-inside: avoid; }
 .sheet .item p { margin-bottom: 6px; }
