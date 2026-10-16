@@ -343,6 +343,21 @@ a.book:hover { color: var(--ink); transform: translate(-2px, -2px); box-shadow: 
 .garden li.right { border-style: solid; border-color: var(--ok); background: var(--ok-bg); }
 .garden li.wrong { border-style: solid; border-color: var(--bad); background: var(--bad-bg); }
 
+/* jocul cu scenarii: alegi reacția potrivită, apoi vezi justificarea și citatul */
+.scenarios { list-style: none; padding: 0; margin: 14px 0; display: grid; gap: 12px; }
+.scenarios > li { padding: 14px; border: 1.5px dashed var(--line); border-radius: 12px; background: var(--card); display: grid; gap: 10px; }
+.scenarios .situation { margin: 0; font-weight: 600; }
+.reaction-choices { display: grid; gap: 8px; }
+.reaction-choices .btn { width: 100%; justify-content: flex-start; text-align: left; white-space: normal; height: auto; line-height: 1.35; }
+.scenarios .reactions { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; font-size: .95rem; }
+.scenarios .reactions li { padding: 8px 10px; border-radius: 8px; border: 1.5px solid var(--line); color: var(--muted); }
+.scenarios .reactions li.best { border-color: var(--ok); background: var(--ok-bg); color: var(--ink); font-weight: 600; }
+.scenarios .reactions li.picked { border-color: var(--bad); background: var(--bad-bg); color: var(--ink); }
+.scenarios .verdict { margin: 0; font-size: .95rem; }
+.scenarios .quote { margin: 0; font-size: .9rem; }
+.scenarios > li.right { border-style: solid; border-color: var(--ok); }
+.scenarios > li.wrong { border-style: solid; border-color: var(--bad); }
+
 /* joc de atenție: secundarul și notificările false */
 .att-controls { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px; margin: 12px 0; }
 .att-controls .field { flex: 0 1 200px; }

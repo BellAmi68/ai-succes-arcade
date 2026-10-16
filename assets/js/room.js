@@ -698,6 +698,72 @@
     return wrap;
   }
 
+  /* Scenarii: pentru fiecare situație alegi una dintre reacții; după alegere apar reacția potrivită,
+     justificarea și citatul-dovadă (elemente = { situatie, reactii: [...], corect, explicatie, citat? }). */
+  function gameScenarios(G) {
+    var saved = (state.jocuri[G.id] && state.jocuri[G.id].alegeri) || {};
+    var list = el("ol", { class: "scenarios" });
+    var score = el("p", { class: "score", role: "status" });
+
+    function updateScore() {
+      var keys = Object.keys(saved);
+      var ok = keys.filter(function (k) { return saved[k] === G.elemente[k].corect; }).length;
+      score.textContent = "Situații rezolvate: " + keys.length + " din " + G.elemente.length + " · corect: " + ok;
+      if (keys.length === G.elemente.length) {
+        score.textContent += ok === keys.length ? " — toate mesajele au ajuns la Garcia!" : " — gata! Citește justificările de la cele marcate cu roșu.";
+      }
+    }
+
+    G.elemente.forEach(function (item, i) {
+      var li = el("li");
+      function reveal() {
+        var ok = saved[i] === item.corect;
+        li.className = ok ? "right" : "wrong";
+        li.innerHTML = "";
+        li.appendChild(el("p", { class: "situation", text: item.situatie }));
+        li.appendChild(el("ul", { class: "reactions" }, item.reactii.map(function (r, k) {
+          var cls = k === item.corect ? "best" : (k === saved[i] ? "picked" : "");
+          var mark = k === item.corect ? "✓ " : (k === saved[i] ? "✗ " : "");
+          return el("li", { class: cls, text: mark + r });
+        })));
+        li.appendChild(el("p", { class: "verdict" }, [el("strong", { text: ok ? "Corect. " : "Nu chiar. " }), item.explicatie]));
+        if (item.citat) li.appendChild(quote(item.citat));
+      }
+      function answer(k) {
+        saved[i] = k;
+        reveal();
+        state.jocuri[G.id] = { alegeri: saved, gata: Object.keys(saved).length === G.elemente.length };
+        save();
+        updateScore();
+        LCS.announce((k === item.corect ? "Corect. " : "Nu chiar. ") + item.explicatie);
+      }
+      if (i in saved) {
+        reveal();
+      } else {
+        li.appendChild(el("p", { class: "situation", text: item.situatie }));
+        li.appendChild(el("div", { class: "reaction-choices" }, item.reactii.map(function (r, k) {
+          return el("button", { class: "btn secondary small", type: "button", text: r, onclick: function () { answer(k); } });
+        })));
+      }
+      list.appendChild(li);
+    });
+    updateScore();
+
+    var reset = el("button", { class: "btn ghost small", type: "button", text: "Reia jocul" });
+    reset.addEventListener("click", function () {
+      delete state.jocuri[G.id];
+      save();
+      var fresh = gameScenarios(G);
+      wrap.parentNode.replaceChild(fresh, wrap);
+    });
+    var wrap = el("div", { class: "card", id: "joc-" + G.id }, [
+      el("h3", { text: G.titlu }),
+      el("p", { class: "muted", text: G.instructiuni }),
+      list, score, el("div", { class: "btn-row" }, [reset])
+    ]);
+    return wrap;
+  }
+
   function jocuri() {
     var box = el("div", { class: "games" });
     C.jocuri.forEach(function (G) {
@@ -706,6 +772,7 @@
       else if (G.tip === "potrivire") box.appendChild(gameMatch(G));
       else if (G.tip === "atentie") box.appendChild(gameAttention(G));
       else if (G.tip === "gradina") box.appendChild(gameGarden(G));
+      else if (G.tip === "scenarii") box.appendChild(gameScenarios(G));
     });
     return section("jocuri", 3, "Mini-jocuri", C.jocuriIntro || "Două jocuri scurte pentru fixarea poveștii și a ideilor.", box);
   }
@@ -1060,6 +1127,49 @@
     ]);
   }
 
+  /* Opțional (aplicaAzi.bifat): o listă scurtă de pași de bifat azi (pasi = { text, hint? }).
+     Bifele stau în state.aplica._bifat = { "0": true }. */
+  function bifatDone(B) {
+    var b = state.aplica._bifat || {};
+    return B.pasi.map(function (_, i) { return i; }).filter(function (i) { return b[i]; });
+  }
+  function bifat(B, resets) {
+    var list = el("ol", { class: "challenge checklist" });
+    var count = el("p", { class: "score", role: "status" });
+    function draw() {
+      var b = state.aplica._bifat || {};
+      list.innerHTML = "";
+      B.pasi.forEach(function (p, i) {
+        var box = el("input", { type: "checkbox", id: "bifat-" + i, checked: !!b[i] });
+        box.addEventListener("change", function () {
+          var s = state.aplica._bifat || (state.aplica._bifat = {});
+          if (box.checked) s[i] = true; else delete s[i];
+          save();
+          draw();
+          var again = document.getElementById("bifat-" + i);
+          if (again) again.focus();
+        });
+        list.appendChild(el("li", { class: b[i] ? "done" : "" }, [
+          el("div", { class: "challenge-head" }, [
+            box,
+            el("label", { for: "bifat-" + i }, [el("strong", { text: "Pasul " + (i + 1) + " · " + p.text }), p.hint ? el("span", { class: "small muted", text: p.hint }) : null])
+          ])
+        ]));
+      });
+      var n = bifatDone(B).length;
+      count.textContent = "Pași bifați: " + n + " din " + B.pasi.length + (n === B.pasi.length ? " — mesajul a ajuns la Garcia!" : "");
+    }
+    resets.push(draw);
+    draw();
+    return el("div", { class: "tool", id: "bifat" }, [
+      el("h3", { text: B.titlu }),
+      B.citat ? quote(B.citat) : null,
+      B.instructiuni ? el("p", { class: "small muted", text: B.instructiuni }) : null,
+      list,
+      count
+    ]);
+  }
+
   function reflectie() {
     var R = C.reflectie, A = C.aplicaAzi;
     var resets = [];
@@ -1120,6 +1230,11 @@
         var v = (state.aplica[f.id] || "").trim();
         if (v) out.push([f.eticheta.replace(/^\d+\.\s*/, ""), v]);
       });
+      if (A.bifat) {
+        var bz = bifatDone(A.bifat);
+        if (bz.length) out.push([A.bifat.etichetaCartonas || "Pașii bifați", bz.length + " din " + A.bifat.pasi.length + ": " +
+          bz.map(function (i) { return A.bifat.pasi[i].text; }).join(" · ")]);
+      }
       return out;
     }
     function cardText() {
@@ -1158,6 +1273,7 @@
       A.jurnalGanduri ? jurnalGanduri(A.jurnalGanduri, resets) : null,
       A.titluCampuri ? el("h4", { class: "tool-title", text: A.titluCampuri }) : null,
       steps,
+      A.bifat ? bifat(A.bifat, resets) : null,
       el("div", { class: "btn-row no-print" }, [
         el("button", { class: "btn", type: "button", text: "Generează cartonașul", onclick: buildCard }),
         copyBtn,
