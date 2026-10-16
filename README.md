@@ -82,9 +82,9 @@ Scripturile sunt clasice (nu module ES), așa că site-ul merge și deschis dire
 2. Alege ramura (de exemplu `main`) și folderul `/ (root)`, apoi salvează.
 3. Site-ul apare la `https://<utilizator>.github.io/<repository>/`. Toate linkurile sunt relative, deci funcționează și dintr-un subfolder.
 
-## De verificat înainte de publicare: citatele din Conwell
+## Citatele din Conwell: verificate
 
-Citatele în engleză din `carti/acres-of-diamonds/data.js` sunt scrise după textul clasic al conferinței (versiunea de la Philadelphia). În sesiunea în care s-a construit camera, Project Gutenberg nu a fost accesibil din mediul de lucru, așa că formulările **nu au fost confruntate cuvânt cu cuvânt** cu sursa. Înainte de lansare, verifică fiecare câmp `en` în [Project Gutenberg #368](https://www.gutenberg.org/ebooks/368) și ajustează traducerea `ro` dacă diferă ceva. Același lucru e valabil pentru cifra de 833 de dolari din indiciul „Alte povești, același tipar”.
+Toate câmpurile `en` din `carti/acres-of-diamonds/data.js` au fost confruntate cuvânt cu cuvânt cu textul din `Surse/pg368.txt` (Project Gutenberg #368). Omisiunile sunt marcate cu `[…]`. Tot din sursă au fost verificate cifra de 833 de dolari (fermierul din Pennsylvania) și numărul de conferințe („almost five thousand times”).
 
 ## Licență
 

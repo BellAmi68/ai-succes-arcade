@@ -58,8 +58,8 @@ window.CAMERA = {
       loc: "Partea despre bani"
     },
     cinstiti: {
-      en: "Ninety-eight out of one hundred of the rich men of America are honest. That is why they are rich.",
-      ro: "Nouăzeci și opt din o sută de oameni bogați ai Americii sunt cinstiți. De asta sunt bogați.",
+      en: "[…] ninety-eight out of one hundred of the rich men of America are honest. That is why they are rich.",
+      ro: "[…] nouăzeci și opt din o sută de oameni bogați ai Americii sunt cinstiți. De asta sunt bogați.",
       loc: "Partea despre bani"
     },
     maretia: {
@@ -81,7 +81,7 @@ window.CAMERA = {
       titlu: "Cine a fost Russell Conwell",
       html:
         "<p>Avocat, jurnalist, apoi pastor baptist în Philadelphia (SUA). În 1884 a început să predea seara unor tineri muncitori care nu-și permiteau școala; din acele cursuri s-a născut <strong>Temple University</strong>.</p>" +
-        "<p>A ținut conferința „Acres of Diamonds” de peste 6.000 de ori, timp de câteva decenii. Spunea că a folosit banii câștigați din ea ca să-i ajute pe studenți să-și plătească studiile.</p>"
+        "<p>A ținut conferința „Acres of Diamonds” de aproape 5.000 de ori (după propria lui socoteală din ediția tipărită), timp de câteva decenii. Spunea că a folosit banii câștigați din ea ca să-i ajute pe studenți să-și plătească studiile.</p>"
     },
     {
       id: "gen",
@@ -95,7 +95,7 @@ window.CAMERA = {
       id: "rama",
       titlu: "Povestea-ramă: cine o spune?",
       html:
-        "<p>Conwell povestește că în 1870, pe când călătorea pe lângă Tigru și Eufrat, un bătrân ghid arab îi spunea povești pe drum. Una dintre ele a devenit începutul conferinței.</p>" +
+        "<p>Conwell povestește că, cu mulți ani în urmă, pe când cobora pe Tigru și Eufrat, un bătrân ghid arab, angajat la Bagdad, îi spunea povești pe drum. Una dintre ele a devenit începutul conferinței.</p>" +
         "<p>Este deci o poveste <strong>în</strong> poveste: Conwell o repetă publicului, iar noi o citim azi.</p>"
     },
     {
