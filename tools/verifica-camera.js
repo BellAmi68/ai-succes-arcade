@@ -40,8 +40,25 @@ if (letters.sort().join("") !== norm(B.cuvant).split("").sort().join("")) {
 }
 
 (C.jocuri || []).forEach((g) => {
-  if (["ordonare", "sapa"].indexOf(g.tip) === -1) err(`joc „${g.id}”: tip necunoscut ${g.tip}`);
+  if (["ordonare", "sapa", "potrivire"].indexOf(g.tip) === -1) err(`joc „${g.id}”: tip necunoscut ${g.tip}`);
+  if (g.tip === "potrivire") {
+    const right = (g.elemente || []).map((e) => e.dreapta);
+    (g.elemente || []).forEach((e, i) => { if (!e.stanga || !e.dreapta) err(`joc „${g.id}”: elementul ${i + 1} are nevoie de „stanga” și „dreapta”`); });
+    if (new Set(right).size !== right.length) err(`joc „${g.id}”: două elemente au aceeași „dreapta”`);
+  }
 });
+
+const A = C.aplicaAzi || {};
+[A.calculator, A.jurnal].forEach((t) => {
+  if (t && t.citat && !quotes[t.citat]) err(`aplicaAzi: citat inexistent ${t.citat}`);
+});
+if (A.calculator && !(A.calculator.frecvente || []).every((f) => f.eticheta && f.peAn > 0)) err("aplicaAzi.calculator: fiecare frecvență are nevoie de „eticheta” și „peAn” > 0");
+if (A.jurnal) {
+  if (!(C.virtuti || []).length) err("aplicaAzi.jurnal are nevoie de lista „virtuti”");
+  if ((A.jurnal.zile || []).length !== 7) err("aplicaAzi.jurnal: „zile” trebuie să aibă 7 elemente");
+  const ids = (C.virtuti || []).map((v) => v.id);
+  if (new Set(ids).size !== ids.length) err("virtuti: id-uri duplicate");
+}
 
 Object.keys(quotes).forEach((k) => {
   const words = quotes[k].ro.split(/\s+/).length;

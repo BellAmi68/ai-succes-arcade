@@ -51,6 +51,18 @@ window.CATALOG = [
     teaser: "Cel mai faimos autor de farse al secolului XIX dă sfaturi despre bani și cinste. Deschide 5 lacăte și decide cât de mult îl crezi."
   },
   {
+    id: "the-way-to-wealth",
+    titlu: "Cum să devii bogat și arta virtuții",
+    titluOriginal: "The Way to Wealth",
+    autor: "Benjamin Franklin",
+    an: "1758 · capitolul despre virtuți, 1784",
+    grup: "international",
+    stare: "activ",
+    url: "carti/the-way-to-wealth/",
+    culoare: "#7a3b69",
+    teaser: "La o licitație, un bătrân răspunde plângerilor despre taxe numai cu proverbe, iar Franklin își notează greșelile într-un carnețel. Deschide 5 lacăte și află ce leagă banii de caracter."
+  },
+  {
     id: "a-message-to-garcia",
     titlu: "Un mesaj pentru Garcia",
     titluOriginal: "A Message to Garcia",

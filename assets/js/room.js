@@ -124,7 +124,7 @@
       grid.appendChild(det);
     });
     var src = el("p", { class: "small muted", html:
-      "Textul integral, în engleză: <a href=\"" + C.sursa.url + "\" rel=\"noopener\">" + C.sursa.nume + "</a>. Rezumatele și traducerile citatelor sunt originale." });
+      "Textul integral, în engleză: " + [].concat(C.sursa).map(function (x) { return "<a href=\"" + x.url + "\" rel=\"noopener\">" + x.nume + "</a>"; }).join(" și ") + ". Rezumatele și traducerile citatelor sunt originale." });
     return section("dosar", 1, "Dosarul de indicii",
       "Deschide fișele una câte una. Vei avea nevoie de citatele din ele ca să deschizi lacătele.",
       el("div", {}, [grid, src]));
@@ -390,11 +390,82 @@
     return wrap;
   }
 
+  /* Potrivire: fiecărui element din stânga îi alegi perechea din dreapta (listă derulantă). */
+  function gameMatch(G) {
+    var saved = (state.jocuri[G.id] && state.jocuri[G.id].alegeri) || {};
+    var order = LCS.shuffle(G.elemente.map(function (_, i) { return i; }), C.id + G.id);
+    var list = el("ol", { class: "match-list" });
+    var fb = el("div", { class: "feedback", role: "status" });
+    var selects = [];
+
+    G.elemente.forEach(function (item, i) {
+      var id = "joc-" + G.id + "-" + i;
+      var sel = el("select", { id: id }, [el("option", { value: "", text: "— alege —" })]);
+      order.forEach(function (j) {
+        sel.appendChild(el("option", { value: String(j), text: G.elemente[j].dreapta }));
+      });
+      if (i in saved) sel.value = String(saved[i]);
+      var why = el("p", { class: "why small" });
+      sel.addEventListener("change", function () {
+        if (sel.value === "") delete saved[i]; else saved[i] = Number(sel.value);
+        li.className = "";
+        why.textContent = "";
+        fb.className = "feedback";
+        state.jocuri[G.id] = { alegeri: saved, gata: false };
+        save();
+      });
+      var li = el("li", {}, [
+        el("label", { for: id, class: "left" }, [
+          el("span", { class: "txt", text: item.stanga }),
+          item.original ? el("span", { class: "orig", lang: "en", text: item.original }) : null
+        ]),
+        sel, why
+      ]);
+      selects.push({ sel: sel, li: li, why: why, item: item, i: i });
+      list.appendChild(li);
+    });
+
+    function check(silent) {
+      var right = 0;
+      selects.forEach(function (s) {
+        var ok = s.sel.value !== "" && Number(s.sel.value) === s.i;
+        if (ok) right++;
+        s.li.className = ok ? "right" : "wrong";
+        s.why.textContent = ok && s.item.explicatie ? s.item.explicatie : "";
+      });
+      var all = right === selects.length;
+      fb.className = "feedback show " + (all ? "ok" : "bad");
+      fb.textContent = all
+        ? "Perfect! Toate cele " + selects.length + " perechi sunt corecte."
+        : right + " din " + selects.length + " perechi sunt corecte. Schimbă perechile marcate cu roșu.";
+      state.jocuri[G.id] = { alegeri: saved, gata: all };
+      save();
+      if (!silent) LCS.announce(fb.textContent);
+    }
+    function solve() {
+      selects.forEach(function (s) { s.sel.value = String(s.i); saved[s.i] = s.i; });
+      check();
+    }
+    if (state.jocuri[G.id] && state.jocuri[G.id].gata) check(true);
+
+    return el("div", { class: "card", id: "joc-" + G.id }, [
+      el("h3", { text: G.titlu }),
+      el("p", { class: "muted", text: G.instructiuni }),
+      list,
+      el("div", { class: "btn-row" }, [
+        el("button", { class: "btn", type: "button", text: "Verifică", onclick: function () { check(); } }),
+        el("button", { class: "btn ghost small", type: "button", text: "Arată soluția", onclick: solve })
+      ]),
+      fb
+    ]);
+  }
+
   function jocuri() {
     var box = el("div", { class: "games" });
     C.jocuri.forEach(function (G) {
       if (G.tip === "ordonare") box.appendChild(gameOrder(G));
       else if (G.tip === "sapa") box.appendChild(gameDig(G));
+      else if (G.tip === "potrivire") box.appendChild(gameMatch(G));
     });
     return section("jocuri", 3, "Mini-jocuri", "Două jocuri scurte pentru fixarea poveștii și a ideilor.", box);
   }
@@ -412,8 +483,151 @@
     ]);
   }
 
+  function num(v) { return (Math.round(v * 100) / 100).toLocaleString("ro-RO", { maximumFractionDigits: 2 }); }
+
+  /* Opțional (aplicaAzi.calculator): o cheltuială mică recurentă, socotită pe un an.
+     Valorile se păstrează în state.aplica._calc. */
+  function calcResult(K) {
+    var d = state.aplica._calc || {};
+    var suma = parseFloat(String(d.suma || "").replace(",", "."));
+    var f = K.frecvente[Number(d.frecventa) || 0];
+    if (!(suma > 0) || !f) return null;
+    var an = suma * f.peAn;
+    return { ce: (d.ce || "").trim(), suma: suma, f: f, an: an, luna: an / 12, ani5: an * 5 };
+  }
+  function calcSummary(K) {
+    var r = calcResult(K);
+    if (!r) return "";
+    return (r.ce ? r.ce + ": " : "") + num(r.suma) + " " + K.moneda + ", " + r.f.eticheta + " = " + num(r.an) + " " + K.moneda + " pe an";
+  }
+  function calculator(K, resets) {
+    function get() { return state.aplica._calc || (state.aplica._calc = {}); }
+    var ce = el("input", { type: "text", id: "calc-ce", placeholder: K.exempluCe || "" });
+    var suma = el("input", { type: "text", id: "calc-suma", inputmode: "decimal", autocomplete: "off", placeholder: K.exempluSuma || "" });
+    var frec = el("select", { id: "calc-frecventa" }, K.frecvente.map(function (f, i) {
+      return el("option", { value: String(i), text: f.eticheta + " (" + f.peAn + " pe an)" });
+    }));
+    var out = el("div", { class: "calc-out", role: "status", "aria-live": "polite" });
+
+    function fill() {
+      var d = state.aplica._calc || {};
+      ce.value = d.ce || "";
+      suma.value = d.suma || "";
+      frec.value = String(d.frecventa || 0);
+      draw();
+    }
+    function draw() {
+      out.innerHTML = "";
+      var r = calcResult(K);
+      if (!r) {
+        out.appendChild(el("p", { class: "muted", text: "Scrie o sumă ca să vezi cât face pe un an." }));
+        return;
+      }
+      out.appendChild(el("p", { class: "calc-line", text: (r.ce || "Cheltuiala ta") + ": " + num(r.suma) + " " + K.moneda + " × " + r.f.peAn + " ori pe an =" }));
+      out.appendChild(el("p", { class: "calc-big", text: num(r.an) + " " + K.moneda + " pe an" }));
+      out.appendChild(el("p", { class: "small muted", text: "Cam " + num(r.luna) + " " + K.moneda + " pe lună · în 5 ani: " + num(r.ani5) + " " + K.moneda + " (fără dobânzi și fără scumpiri)." }));
+      if (K.intrebare) out.appendChild(el("p", { class: "small", text: K.intrebare }));
+    }
+    ce.addEventListener("input", function () { get().ce = ce.value; save(); draw(); });
+    suma.addEventListener("input", function () { get().suma = suma.value; save(); draw(); });
+    frec.addEventListener("change", function () { get().frecventa = Number(frec.value); save(); draw(); });
+    resets.push(fill);
+    fill();
+
+    return el("div", { class: "tool", id: "calculator" }, [
+      el("h3", { text: K.titlu }),
+      K.intro ? el("p", { text: K.intro }) : null,
+      K.citat ? quote(K.citat) : null,
+      el("div", { class: "calc-grid" }, [
+        el("div", { class: "field" }, [el("label", { for: "calc-ce", text: "Ce cheltuială?" }), ce]),
+        el("div", { class: "field" }, [el("label", { for: "calc-suma", text: "Cât costă o dată (" + K.moneda + ")" }), suma]),
+        el("div", { class: "field" }, [el("label", { for: "calc-frecventa", text: "Cât de des" }), frec])
+      ]),
+      out
+    ]);
+  }
+
+  /* Opțional (aplicaAzi.jurnal): pagina săptămânală din carnețelul lui Franklin.
+     O virtute în atenție, câte un punct pentru fiecare abatere. Se tipărește separat. */
+  function jurnal(J, resets) {
+    var V = C.virtuti;
+    function get() { return state.aplica._jurnal || (state.aplica._jurnal = { virtute: V[0].id, puncte: {} }); }
+    var sel = el("select", { id: "jurnal-virtute" }, V.map(function (v) { return el("option", { value: v.id, text: v.nume }); }));
+    var week = el("input", { type: "text", id: "jurnal-saptamana", placeholder: "de exemplu: 3–9 noiembrie" });
+    var page = el("div", { class: "tracker", id: "jurnal" });
+
+    function draw() {
+      var d = state.aplica._jurnal || { virtute: V[0].id, puncte: {} };
+      var focus = V.filter(function (v) { return v.id === d.virtute; })[0] || V[0];
+      sel.value = focus.id;
+      if (document.activeElement !== week) week.value = d.saptamana || "";
+      var rows = [focus].concat(V.filter(function (v) { return v !== focus; }));
+      page.innerHTML = "";
+      page.appendChild(el("p", { class: "tracker-kicker", text: J.antet || "Carnețelul virtuților" }));
+      page.appendChild(el("h4", { text: focus.nume.toUpperCase() }));
+      page.appendChild(el("p", { class: "tracker-precept", text: "„" + focus.ro + "”" }));
+      page.appendChild(el("p", { class: "small tracker-week", text: "Săptămâna: " + (d.saptamana || "______________________") }));
+      var head = el("tr", {}, [el("th", { scope: "col", text: "Virtutea" })].concat(J.zile.map(function (z) { return el("th", { scope: "col", text: z }); })));
+      var body = el("tbody");
+      rows.forEach(function (v) {
+        var tr = el("tr", { class: v === focus ? "focus" : null }, [el("th", { scope: "row", text: v.nume })]);
+        J.zile.forEach(function (z, k) {
+          var key = v.id + ":" + k;
+          var n = (d.puncte && d.puncte[key]) || 0;
+          var b = el("button", { type: "button", class: "dot", "aria-label": v.nume + ", " + z + ": " + n + (n === 1 ? " greșeală" : " greșeli"), text: n ? new Array(n + 1).join("•") : "" });
+          b.addEventListener("click", function () {
+            var g = get();
+            g.puncte = g.puncte || {};
+            g.puncte[key] = ((g.puncte[key] || 0) + 1) % 4;
+            save();
+            draw();
+            var again = page.querySelector("[data-k='" + key + "']");
+            if (again) again.focus();
+          });
+          b.setAttribute("data-k", key);
+          tr.appendChild(el("td", {}, [b]));
+        });
+        body.appendChild(tr);
+      });
+      page.appendChild(el("div", { class: "table-scroll" }, [el("table", {}, [el("thead", {}, [head]), body])]));
+      if (J.instructiuniTabel) page.appendChild(el("p", { class: "small muted no-print", text: J.instructiuniTabel }));
+    }
+    sel.addEventListener("change", function () { get().virtute = sel.value; save(); draw(); });
+    week.addEventListener("input", function () { get().saptamana = week.value; save(); draw(); });
+    resets.push(draw);
+    draw();
+
+    var clear = el("button", { class: "btn ghost small", type: "button", text: "Golește punctele" });
+    clear.addEventListener("click", function () {
+      if (!window.confirm("Ștergi toate punctele din tabel?")) return;
+      get().puncte = {};
+      save();
+      draw();
+    });
+
+    return el("div", { class: "tool", id: "carnet" }, [
+      el("h3", { text: J.titlu }),
+      J.intro ? el("p", { text: J.intro }) : null,
+      J.citat ? quote(J.citat) : null,
+      el("div", { class: "calc-grid" }, [
+        el("div", { class: "field" }, [el("label", { for: "jurnal-virtute", text: "Virtutea săptămânii" }), sel]),
+        el("div", { class: "field" }, [el("label", { for: "jurnal-saptamana", text: "Săptămâna (opțional)" }), week])
+      ]),
+      page,
+      el("div", { class: "btn-row no-print" }, [
+        el("button", { class: "btn secondary", type: "button", text: "Tipărește tabelul", onclick: function () {
+          document.body.classList.add("print-jurnal");
+          window.print();
+          setTimeout(function () { document.body.classList.remove("print-jurnal"); }, 500);
+        } }),
+        clear
+      ])
+    ]);
+  }
+
   function reflectie() {
     var R = C.reflectie, A = C.aplicaAzi;
+    var resets = [];
     var privacy = el("p", { class: "privacy", text:
       "Ce scrii aici rămâne doar pe acest dispozitiv, în browserul tău. Nu se trimite nicăieri. Poți șterge totul cu butonul de mai jos." });
 
@@ -432,12 +646,10 @@
       cardOut.innerHTML = "";
       var dl = el("dl");
       var any = false;
-      A.campuri.forEach(function (f) {
-        var v = (state.aplica[f.id] || "").trim();
-        if (!v) return;
+      cardEntries().forEach(function (e) {
         any = true;
-        dl.appendChild(el("dt", { text: f.eticheta.replace(/^\d+\.\s*/, "") }));
-        dl.appendChild(el("dd", { text: v }));
+        dl.appendChild(el("dt", { text: e[0] }));
+        dl.appendChild(el("dd", { text: e[1] }));
       });
       if (!any) {
         cardOut.appendChild(el("p", { text: "Completează măcar un câmp, apoi generează cartonașul." }));
@@ -451,12 +663,22 @@
       }
       cardOut.classList.add("show");
     }
-    function cardText() {
-      var lines = [A.titluCartonas + " — după „" + C.titlu + "”, " + C.autor, ""];
+    /* Perechi [etichetă, valoare] pentru cartonaș: câmpurile completate + rezultatele uneltelor. */
+    function cardEntries() {
+      var out = [];
+      if (A.calculator) {
+        var c = calcSummary(A.calculator);
+        if (c) out.push([A.calculator.etichetaCartonas || "Calculul meu", c]);
+      }
       A.campuri.forEach(function (f) {
         var v = (state.aplica[f.id] || "").trim();
-        if (v) lines.push(f.eticheta.replace(/^\d+\.\s*/, "") + ":", v, "");
+        if (v) out.push([f.eticheta.replace(/^\d+\.\s*/, ""), v]);
       });
+      return out;
+    }
+    function cardText() {
+      var lines = [A.titluCartonas + " — după „" + C.titlu + "”, " + C.autor, ""];
+      cardEntries().forEach(function (e) { lines.push(e[0] + ":", e[1], ""); });
       return lines.join("\n");
     }
     var copyBtn = el("button", { class: "btn secondary", type: "button", text: "Copiază textul" });
@@ -475,6 +697,7 @@
       state.note = {}; state.aplica = {}; state.cartonas = false;
       save();
       document.querySelectorAll("#reflectie textarea, #reflectie input[type=text]").forEach(function (i) { i.value = ""; });
+      resets.forEach(function (fn) { fn(); });
       cardOut.classList.remove("show");
       cardOut.innerHTML = "";
     });
@@ -483,6 +706,9 @@
     var apply = el("div", { class: "card apply", id: "aplica" }, [
       el("h3", { text: A.titlu + " · " + A.durata }),
       el("p", { text: A.intro }),
+      A.calculator ? calculator(A.calculator, resets) : null,
+      A.jurnal && C.virtuti ? jurnal(A.jurnal, resets) : null,
+      A.titluCampuri ? el("h4", { class: "tool-title", text: A.titluCampuri }) : null,
       steps,
       el("div", { class: "btn-row no-print" }, [
         el("button", { class: "btn", type: "button", text: "Generează cartonașul", onclick: buildCard }),
