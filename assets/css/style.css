@@ -330,6 +330,19 @@ a.book:hover { color: var(--ink); transform: translate(-2px, -2px); box-shadow: 
 .tile .badge { font-size: .8rem; font-weight: 700; }
 .score { font-weight: 700; }
 
+/* jocul „grădinarul”: gânduri sortate în semințe și buruieni */
+.garden { list-style: none; padding: 0; margin: 14px 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
+.garden li { padding: 12px; border: 1.5px dashed var(--line); border-radius: 12px; background: var(--card); display: flex; flex-direction: column; gap: 8px; }
+.garden .thought { margin: 0; font: italic 600 1rem/1.4 var(--serif); }
+.garden .verdict { margin: 0; font-size: .92rem; }
+.garden .quote { margin: 0; font-size: .9rem; }
+.garden-choices { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
+.garden-choices .btn { flex: 1 1 110px; }
+.garden .seed-btn { background: var(--ok); border-color: var(--ok); color: #fff; }
+.garden .weed-btn { background: var(--bg-2); color: var(--ink); }
+.garden li.right { border-style: solid; border-color: var(--ok); background: var(--ok-bg); }
+.garden li.wrong { border-style: solid; border-color: var(--bad); background: var(--bad-bg); }
+
 /* joc de atenție: secundarul și notificările false */
 .att-controls { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px; margin: 12px 0; }
 .att-controls .field { flex: 0 1 200px; }
@@ -370,6 +383,10 @@ a.book:hover { color: var(--ink); transform: translate(-2px, -2px); box-shadow: 
 .challenge-foot { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-left: 34px; }
 .challenge-foot input[type="text"] { flex: 1 1 180px; min-width: 0; font: .95rem/1.4 var(--sans); padding: 8px 10px; min-height: 40px; border-radius: 8px; border: 1.5px solid var(--line); background: var(--card); color: var(--ink); }
 @media (max-width: 480px) { .challenge li p, .challenge-foot { margin-left: 0; } }
+.thought-log li p, .thought-log .field { margin-left: 0; }
+.thought-log li .quote { margin: 6px 0 10px; font-size: .9rem; }
+.thought-log .field { margin-top: 8px; }
+.thought-log .field textarea { min-height: 64px; }
 
 /* reflecție */
 .prompts { display: grid; gap: 14px; }
@@ -421,6 +438,7 @@ a.book:hover { color: var(--ink); transform: translate(-2px, -2px); box-shadow: 
 .sheet th, .sheet td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; overflow-wrap: anywhere; }
 .sheet th { background: var(--bg-2); }
 .sheet td.write { width: 38%; }
+.sheet td.write-sm { width: 22%; }
 .sheet .item { margin: 0 0 18px; break-inside: avoid; }
 .sheet .item p { margin-bottom: 6px; }
 .lines { border-bottom: 1px solid var(--line); height: 30px; }

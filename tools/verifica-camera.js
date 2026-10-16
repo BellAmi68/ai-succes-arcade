@@ -3,7 +3,8 @@
    Utilizare:  node tools/verifica-camera.js carti/acres-of-diamonds/data.js
                node tools/verifica-camera.js carti/<id>/data.js --sursa Surse/<text>.txt
    Cu --sursa (se poate repeta), fiecare câmp `en` din citate și fiecare `original` din jocuri
-   trebuie să apară exact în textul sursă (spațierea și rupturile de rând nu contează; […] separă fragmentele).
+   trebuie să apară exact în textul sursă (spațierea, rupturile de rând și liniuțele de subliniere prin care
+   Gutenberg marchează italicul nu contează; […] separă fragmentele).
    Fără dependențe; rulează cu orice Node.js recent. */
 "use strict";
 const fs = require("fs");
@@ -48,7 +49,14 @@ if (letters.sort().join("") !== norm(B.cuvant).split("").sort().join("")) {
 }
 
 (C.jocuri || []).forEach((g) => {
-  if (["ordonare", "sapa", "potrivire", "atentie"].indexOf(g.tip) === -1) err(`joc „${g.id}”: tip necunoscut ${g.tip}`);
+  if (["ordonare", "sapa", "potrivire", "atentie", "gradina"].indexOf(g.tip) === -1) err(`joc „${g.id}”: tip necunoscut ${g.tip}`);
+  if (g.tip === "gradina") {
+    if ((g.etichete || []).length !== 2) err(`joc „${g.id}”: „etichete” trebuie să aibă două texte (sămânță, buruiană)`);
+    (g.elemente || []).forEach((e, i) => {
+      if (!e.text || typeof e.samanta !== "boolean" || !e.explicatie) err(`joc „${g.id}”: elementul ${i + 1} are nevoie de „text”, „samanta” (true/false) și „explicatie”`);
+      if (e.citat && !quotes[e.citat]) err(`joc „${g.id}”, elementul ${i + 1}: citat inexistent ${e.citat}`);
+    });
+  }
   if (g.tip === "atentie") {
     if (g.citat && !quotes[g.citat]) err(`joc „${g.id}”: citat inexistent ${g.citat}`);
     if (!(g.durate || []).length || !g.durate.every((d) => d > 0)) err(`joc „${g.id}”: „durate” are nevoie de cel puțin o durată în secunde`);
@@ -62,7 +70,7 @@ if (letters.sort().join("") !== norm(B.cuvant).split("").sort().join("")) {
 });
 
 const A = C.aplicaAzi || {};
-[A.calculator, A.jurnal, A.provocare].forEach((t) => {
+[A.calculator, A.jurnal, A.provocare, A.jurnalGanduri].forEach((t) => {
   if (t && t.citat && !quotes[t.citat]) err(`aplicaAzi: citat inexistent ${t.citat}`);
 });
 if (A.calculator && !(A.calculator.frecvente || []).every((f) => f.eticheta && f.peAn > 0)) err("aplicaAzi.calculator: fiecare frecvență are nevoie de „eticheta” și „peAn” > 0");
@@ -70,6 +78,13 @@ if (A.provocare) {
   if ((A.provocare.zile || []).length !== 7) err("aplicaAzi.provocare: „zile” trebuie să aibă 7 elemente");
   if (!(A.provocare.minute > 0)) err("aplicaAzi.provocare: „minute” trebuie să fie > 0");
   (A.provocare.zile || []).forEach((z, i) => { if (!z.titlu || !z.text) err(`aplicaAzi.provocare: ziua ${i + 1} are nevoie de „titlu” și „text”`); });
+}
+if (A.jurnalGanduri) {
+  if ((A.jurnalGanduri.zile || []).length !== 7) err("aplicaAzi.jurnalGanduri: „zile” trebuie să aibă 7 elemente");
+  (A.jurnalGanduri.zile || []).forEach((z, i) => {
+    if (!z.titlu || !z.text) err(`aplicaAzi.jurnalGanduri: ziua ${i + 1} are nevoie de „titlu” și „text”`);
+    if (z.citat && !quotes[z.citat]) err(`aplicaAzi.jurnalGanduri: ziua ${i + 1}, citat inexistent ${z.citat}`);
+  });
 }
 if (A.jurnal) {
   if (!(C.virtuti || []).length) err("aplicaAzi.jurnal are nevoie de lista „virtuti”");
@@ -84,7 +99,7 @@ Object.keys(quotes).forEach((k) => {
 });
 
 if (sources.length) {
-  const flat = (t) => t.replace(/\s+/g, " ");
+  const flat = (t) => t.replace(/_/g, "").replace(/\s+/g, " ");
   const text = flat(sources.map((s) => fs.readFileSync(s, "utf8")).join("\n"));
   const check = (where, en) => {
     String(en).split("[…]").map((f) => flat(f).trim()).filter(Boolean).forEach((f) => {

@@ -16,15 +16,15 @@ window.CATALOG = [
   },
   {
     id: "as-a-man-thinketh",
-    titlu: "Cum gândește omul",
+    titlu: "Așa cum gândește omul",
     titluOriginal: "As a Man Thinketh",
     autor: "James Allen",
     an: "1903",
     grup: "international",
-    stare: "curand",
-    url: "",
+    stare: "activ",
+    url: "carti/as-a-man-thinketh/",
     culoare: "#5b4a8a",
-    teaser: "Grădina minții: ce semeni în gânduri crește în fapte."
+    teaser: "Mintea e o grădină: ce semeni în gânduri crește în fapte. Deschide 5 lacăte, sortează semințe și buruieni și află ce nu depinde de grădinar."
   },
   {
     id: "the-science-of-getting-rich",
