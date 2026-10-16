@@ -1,4 +1,4 @@
-/* Lecturi care schimbă — motorul unei camere.
+/* Cărți care schimbă vieți — motorul unei camere.
    Citește window.CAMERA (din carti/<id>/data.js) și construiește pagina în #camera.
    Nu trimite nimic nicăieri: progresul și notițele stau doar în localStorage. */
 (function () {
@@ -1094,7 +1094,7 @@
     if (!C) return;
     KEY = "camera:" + C.id;
     state = load();
-    document.title = C.titlu + " · Lecturi care schimbă";
+    document.title = C.titlu + " · Cărți care schimbă vieți";
     var root = document.getElementById("camera");
     root.innerHTML = "";
     [hero(), stepper(), dosar(), breakout(), jocuri(), reflectie(), profesori()].forEach(function (n) { root.appendChild(n); });

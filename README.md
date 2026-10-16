@@ -1,6 +1,6 @@
-# Lecturi care schimbă
+# Cărți care schimbă vieți
 
-Arcadă educativă în limba română cu clasici ai dezvoltării personale din domeniul public. Fiecare carte devine o **cameră** interactivă:
+Escape room de lectură în limba română, cu clasici ai dezvoltării personale din domeniul public. Fiecare carte devine o **cameră** interactivă:
 
 1. **Dosarul de indicii**: context, rezumat, citate scurte, glosar
 2. **Breakout**: 4–5 lacăte; fiecare se deschide cu răspunsul corect **și** citatul care îl dovedește
@@ -18,6 +18,7 @@ Publicul vizat: elevi (joacă), profesori (fișă tipăribilă), adulți cititor
 index.html                     Pagina de start (catalogul)
 404.html                       Pagina de eroare pentru GitHub Pages
 .nojekyll                      Oprește procesarea Jekyll pe GitHub Pages
+CNAME                          Domeniul propriu (cartibune.aisucces.ro)
 assets/
   css/style.css                Tot stilul (teme luminoasă/întunecată, tipărire)
   js/util.js                   Utilitare: LCS.el, LCS.store (localStorage), shuffle, temă
@@ -89,7 +90,8 @@ Scripturile sunt clasice (nu module ES), așa că site-ul merge și deschis dire
 
 1. În repository: **Settings → Pages → Build and deployment → Source: Deploy from a branch**.
 2. Alege ramura (de exemplu `main`) și folderul `/ (root)`, apoi salvează.
-3. Site-ul apare la `https://<utilizator>.github.io/<repository>/`. Toate linkurile sunt relative, deci funcționează și dintr-un subfolder.
+3. Site-ul este publicat pe domeniul propriu **https://cartibune.aisucces.ro/**, configurat prin fișierul `CNAME` din rădăcină. La furnizorul DNS al `aisucces.ro`, subdomeniul `cartibune` trebuie să aibă o înregistrare `CNAME` către `<utilizator>.github.io`; apoi bifează **Enforce HTTPS** în Settings → Pages.
+4. Linkurile interne sunt relative, deci site-ul funcționează și fără domeniu propriu (`https://<utilizator>.github.io/<repository>/`) sau deschis local. Singurul URL absolut este cel canonic din `index.html`.
 
 ## Citatele din Conwell: verificate
 

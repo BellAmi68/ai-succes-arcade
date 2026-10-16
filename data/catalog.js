@@ -1,4 +1,4 @@
-/* Catalogul arcadei. Pentru a activa o carte nouă:
+/* Catalogul jocurilor de lectură. Pentru a activa o carte nouă:
    1) creează camera în carti/<id>/ (vezi README)
    2) schimbă aici `stare` din "curand" în "activ" și completează `url`. */
 window.CATALOG = [

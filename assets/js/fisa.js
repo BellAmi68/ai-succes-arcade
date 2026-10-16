@@ -1,4 +1,4 @@
-/* Lecturi care schimbă — fișa profesorului, generată din window.CAMERA.profesor.
+/* Cărți care schimbă vieți — fișa profesorului, generată din window.CAMERA.profesor.
    Pagina 1: ghidul profesorului. Pagina 2: fișa elevului. Pagina 3: barem + citate. */
 (function () {
   "use strict";
