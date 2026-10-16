@@ -34,6 +34,7 @@ carti/
     index.html                 Pagina camerei (doar un schelet; conținutul vine din data.js)
     fisa.html                  Fișa profesorului (tipăribilă)
     data.js                    TOT conținutul camerei
+  the-art-of-money-getting/    Camera pentru P. T. Barnum (aceeași structură)
   _sablon/                     Șablon gol pentru o carte nouă
 tools/
   verifica-camera.js           Verificare automată a unui data.js (Node.js)
@@ -87,6 +88,10 @@ Scripturile sunt clasice (nu module ES), așa că site-ul merge și deschis dire
 ## Citatele din Conwell: verificate
 
 Toate câmpurile `en` din `carti/acres-of-diamonds/data.js` au fost confruntate cuvânt cu cuvânt cu textul din `Surse/pg368.txt` (Project Gutenberg #368). Omisiunile sunt marcate cu `[…]`. Tot din sursă au fost verificate cifra de 833 de dolari (fermierul din Pennsylvania) și numărul de conferințe („almost five thousand times”).
+
+## Citatele din Barnum: verificate
+
+Toate câmpurile `en` din `carti/the-art-of-money-getting/data.js` se regăsesc exact în `Surse/art-of-money-getting.txt` (Project Gutenberg #8581), cu ortografia sursei („to-day”, „indorse”, „he don't advertise”). Omisiunile sunt marcate cu `[…]`. Tot din sursă au fost verificate cifrele din dosar (canapeaua de 30.000 de dolari, biletul lui Genin de 225 de dolari, girurile de 5.000 și 10.000 de dolari, averea de 60.000 de dolari a showmanului din Holborn).
 
 ## Licență
 
