@@ -19,6 +19,8 @@ index.html                     Pagina de start (catalogul)
 404.html                       Pagina de eroare pentru GitHub Pages
 .nojekyll                      Oprește procesarea Jekyll pe GitHub Pages
 CNAME                          Domeniul propriu (cartibune.aisucces.ro)
+sitemap.xml                    Harta site-ului: pagina de start, camerele active și fișele profesorilor
+robots.txt                     Permite indexarea și indică sitemap-ul
 assets/
   css/style.css                Tot stilul (teme luminoasă/întunecată, tipărire)
   js/util.js                   Utilitare: LCS.el, LCS.store (localStorage), shuffle, temă
@@ -75,13 +77,20 @@ Scripturile sunt clasice (nu module ES), așa că site-ul merge și deschis dire
 
 4. **Activează cartea în catalog** (`data/catalog.js`): setează `stare: "activ"` și `url: "carti/<id>/"`.
 
-5. **Verifică datele:**
+5. **Adaugă camera în `sitemap.xml`** (în rădăcină): două rânduri noi înainte de `</urlset>`, cu URL-uri absolute pe domeniul propriu:
+   ```xml
+   <url><loc>https://cartibune.aisucces.ro/carti/<id>/</loc></url>
+   <url><loc>https://cartibune.aisucces.ro/carti/<id>/fisa.html</loc></url>
+   ```
+   Sitemap-ul trebuie să conțină exact camerele cu `stare: "activ"` din catalog; cărțile „în curând” și `_sablon/` nu intră.
+
+6. **Verifică datele:**
    ```bash
    node tools/verifica-camera.js carti/<id>/data.js
    ```
    Scriptul verifică citatele referite, indexurile răspunsurilor, literele față de cuvântul-cheie, tipurile de joc și lungimea citatelor. Cu `--sursa Surse/<text>.txt` verifică în plus că fiecare câmp `en` (și fiecare `original` din jocuri) apare exact în textul sursă; spațierea și liniuțele de subliniere prin care Gutenberg marchează italicul nu contează, iar `[…]` desparte fragmentele.
 
-6. **Testează local:** `python3 -m http.server` în rădăcină, apoi deschide `http://localhost:8000`. Încearcă pe un ecran îngust (aproximativ 390px), pornește camera, deschide toate lacătele și tipărește fișa.
+7. **Testează local:** `python3 -m http.server` în rădăcină, apoi deschide `http://localhost:8000`. Încearcă pe un ecran îngust (aproximativ 390px), pornește camera, deschide toate lacătele și tipărește fișa.
 
 ### Reguli de conținut
 
@@ -96,7 +105,8 @@ Scripturile sunt clasice (nu module ES), așa că site-ul merge și deschis dire
 1. În repository: **Settings → Pages → Build and deployment → Source: Deploy from a branch**.
 2. Alege ramura (de exemplu `main`) și folderul `/ (root)`, apoi salvează.
 3. Site-ul este publicat pe domeniul propriu **https://cartibune.aisucces.ro/**, configurat prin fișierul `CNAME` din rădăcină. La furnizorul DNS al `aisucces.ro`, subdomeniul `cartibune` trebuie să aibă o înregistrare `CNAME` către `<utilizator>.github.io`; apoi bifează **Enforce HTTPS** în Settings → Pages.
-4. Linkurile interne sunt relative, deci site-ul funcționează și fără domeniu propriu (`https://<utilizator>.github.io/<repository>/`) sau deschis local. Singurul URL absolut este cel canonic din `index.html`.
+4. Linkurile interne sunt relative, deci site-ul funcționează și fără domeniu propriu (`https://<utilizator>.github.io/<repository>/`) sau deschis local. URL-urile absolute sunt doar cel canonic din `index.html`, cele din `sitemap.xml` și linkul către sitemap din `robots.txt`.
+5. **Indexare:** `robots.txt` permite accesul tuturor roboților (cu excepția șablonului `carti/_sablon/`) și indică `https://cartibune.aisucces.ro/sitemap.xml`. După publicare, sitemap-ul poate fi trimis și manual în Google Search Console.
 
 ## Citatele din Conwell: verificate
 

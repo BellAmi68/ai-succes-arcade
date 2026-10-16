@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /carti/_sablon/
+
+Sitemap: https://cartibune.aisucces.ro/sitemap.xml
