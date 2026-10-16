@@ -289,6 +289,17 @@ a.book:hover { color: var(--ink); transform: translate(-2px, -2px); box-shadow: 
 .order-list li.right { border-color: var(--ok); background: var(--ok-bg); }
 .order-list li.wrong { border-color: var(--bad); background: var(--bad-bg); }
 
+/* joc de potrivire */
+.match-list { list-style: none; padding: 0; margin: 12px 0; display: grid; gap: 10px; }
+.match-list li { padding: 12px; border: 1.5px solid var(--line); border-radius: 10px; background: var(--card); display: grid; gap: 8px; }
+.match-list .left { display: grid; gap: 2px; font-weight: 600; }
+.match-list .orig { font: italic 400 .85rem/1.4 var(--serif); color: var(--muted); }
+.match-list .why { margin: 0; color: var(--muted); }
+.match-list li.right { border-color: var(--ok); background: var(--ok-bg); }
+.match-list li.wrong { border-color: var(--bad); background: var(--bad-bg); }
+.match-list select, .tool select, .tool input[type="text"] { width: 100%; max-width: 100%; font: 1rem/1.4 var(--sans); padding: 10px 12px; min-height: 44px; border-radius: 10px; border: 1.5px solid var(--line); background: var(--card); color: var(--ink); }
+.match-list select:focus, .tool select:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent); }
+
 .mine { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 14px 0; }
 @media (max-width: 560px) { .mine { grid-template-columns: repeat(2, 1fr); } }
 .tile { min-height: 120px; border-radius: 12px; border: 2px solid var(--ink); padding: 10px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 8px; text-align: center; font-size: .9rem; background: repeating-linear-gradient(45deg, #8a6a43, #8a6a43 8px, #7d5f3a 8px, #7d5f3a 16px); color: #fff; cursor: pointer; font-family: var(--sans); }
@@ -319,6 +330,29 @@ a.book:hover { color: var(--ink); transform: translate(-2px, -2px); box-shadow: 
 .commit-card dl { margin: 0; }
 .commit-card dt { font-weight: 700; font-size: .85rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); margin-top: 10px; }
 .commit-card dd { margin: 2px 0 0; white-space: pre-wrap; }
+
+/* unelte din „aplică azi”: calculator și carnețelul virtuților */
+.tool { margin: 22px 0; padding-top: 18px; border-top: 1.5px dashed var(--line); }
+.tool-title { margin: 22px 0 10px; padding-top: 18px; border-top: 1.5px dashed var(--line); }
+.calc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin: 12px 0; }
+.calc-out { padding: 14px 16px; border-radius: 10px; background: var(--bg-2); }
+.calc-out p { margin: 0 0 4px; }
+.calc-line { font-size: .95rem; }
+.calc-big { font: 700 1.6rem/1.2 var(--serif); color: var(--accent); }
+.tracker { padding: 14px; border: 2px solid var(--ink); border-radius: 10px; background: var(--card); }
+.tracker h4 { margin: 0; letter-spacing: .08em; }
+.tracker-kicker { margin: 0 0 4px; font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.tracker-precept { font-family: var(--serif); font-style: italic; margin: 4px 0; }
+.tracker-week { margin: 0 0 10px; }
+.table-scroll { overflow-x: auto; }
+.tracker table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+.tracker th, .tracker td { border: 1px solid var(--line); padding: 0; text-align: center; }
+.tracker thead th { padding: 6px 2px; background: var(--bg-2); }
+.tracker tbody th { text-align: left; padding: 6px; font-weight: 500; white-space: nowrap; }
+.tracker tr.focus th, .tracker tr.focus td { border-top: 2px solid var(--accent); border-bottom: 2px solid var(--accent); background: color-mix(in srgb, var(--accent) 10%, transparent); }
+.tracker tr.focus th { font-weight: 700; }
+.tracker .dot { width: 100%; min-width: 26px; min-height: 36px; border: 0; background: transparent; color: var(--ink); font-size: 1.2rem; line-height: 1; cursor: pointer; letter-spacing: -.1em; }
+.tracker .dot:focus-visible { outline: 3px solid var(--accent); outline-offset: -3px; }
 
 .teacher-box { display: grid; grid-template-columns: 1fr; gap: 16px; }
 @media (min-width: 760px) { .teacher-box { grid-template-columns: 1.4fr 1fr; } }
@@ -352,4 +386,9 @@ a.book:hover { color: var(--ink); transform: translate(-2px, -2px); box-shadow: 
   body.print-card * { visibility: hidden; }
   body.print-card #cartonas, body.print-card #cartonas * { visibility: visible; }
   body.print-card #cartonas { position: absolute; left: 0; top: 0; width: 100%; }
+  body.print-jurnal * { visibility: hidden; }
+  body.print-jurnal #jurnal, body.print-jurnal #jurnal * { visibility: visible; }
+  body.print-jurnal #jurnal { position: absolute; left: 0; top: 0; width: 100%; border-color: #000; }
+  .tracker th, .tracker td { border-color: #000; }
+  .tracker .dot { min-height: 30pt; }
 }

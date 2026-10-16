@@ -81,6 +81,15 @@
     ]));
     w.appendChild(el("p", { class: "small" }, [el("strong", { text: "Cuvântul-cheie: " }), C.breakout.cuvant]));
 
+    (C.jocuri || []).filter(function (g) { return g.tip === "potrivire"; }).forEach(function (g) {
+      w.appendChild(el("h3", { text: "Soluții · " + g.titlu }));
+      w.appendChild(el("table", {}, [
+        el("tbody", {}, g.elemente.map(function (e) {
+          return el("tr", {}, [el("td", { text: e.stanga }), el("td", { text: e.dreapta })]);
+        }))
+      ]));
+    });
+
     /* ---------- fișa elevului ---------- */
     var F = P.fisaElev;
     w.appendChild(h2(F.titlu, "fisa-elev", true));
@@ -106,7 +115,7 @@
       ]));
     });
     w.appendChild(el("p", { class: "small muted", html:
-      "Text integral: <a href=\"" + C.sursa.url + "\">" + C.sursa.nume + "</a>. Fișa poate fi copiată și folosită liber la clasă." }));
+      "Text integral: " + [].concat(C.sursa).map(function (x) { return "<a href=\"" + x.url + "\">" + x.nume + "</a>"; }).join(" și ") + ". Fișa poate fi copiată și folosită liber la clasă." }));
   }
 
   document.addEventListener("DOMContentLoaded", init);
