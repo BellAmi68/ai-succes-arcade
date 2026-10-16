@@ -101,6 +101,24 @@
       w.appendChild(el("div", { class: "item" }, [el("p", {}, [el("strong", { text: (i + 1) + ". " }), it.text])].concat(lines)));
     });
 
+    /* ---------- opțional: provocarea de 7 zile, de dat acasă ---------- */
+    var PV = C.aplicaAzi && C.aplicaAzi.provocare;
+    if (PV) {
+      w.appendChild(h2(PV.titlu + " · câte " + PV.minute + " minute pe zi", "provocare", true));
+      w.appendChild(el("div", { class: "name-line" }, [el("span", { text: "Nume:" }), el("span", { text: "Săptămâna:" })]));
+      w.appendChild(el("p", { html: "<em>Fă câte un exercițiu pe zi, cu un ceas sau un cronometru. Bifează ziua și notează pe scurt ce ai observat.</em>" }));
+      w.appendChild(el("table", {}, [
+        el("thead", {}, [el("tr", {}, [el("th", { text: "✓" }), el("th", { text: "Ziua și exercițiul" }), el("th", { text: "Ce am observat" })])]),
+        el("tbody", {}, PV.zile.map(function (z, i) {
+          return el("tr", {}, [
+            el("td", { text: "☐" }),
+            el("td", {}, [el("strong", { text: "Ziua " + (i + 1) + " · " + z.titlu }), el("br"), el("span", { class: "small", text: z.text })]),
+            el("td", { class: "write", text: "" })
+          ]);
+        }))
+      ]));
+    }
+
     /* ---------- barem + citate ---------- */
     w.appendChild(h2("Barem orientativ", "barem", true));
     w.appendChild(list(P.barem));
