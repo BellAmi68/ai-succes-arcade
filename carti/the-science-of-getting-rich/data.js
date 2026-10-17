@@ -456,6 +456,7 @@ window.CAMERA = {
       tip: "sapa",
       titlu: "Joc 2 · Detectorul de dovezi",
       instructiuni: "Sapă în fiecare parcelă. Decide: este un fapt pe care îl poți verifica (într-un document, în istorie, în date) sau o afirmație pe care cartea nu o dovedește? Răspuns corect = pepită de aur.",
+      recompensa: { una: "Pepită de aur", multe: "Pepite de aur" },
       etichete: ["Fapt verificabil", "Afirmație fără dovadă"],
       elemente: [
         { text: "Cartea a apărut în 1910 și costa 1 dolar.", da: true, explicatie: "Scrie chiar pe pagina de titlu a ediției originale." },

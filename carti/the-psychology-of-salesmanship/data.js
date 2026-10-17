@@ -41,7 +41,7 @@ window.CAMERA = {
     },
     teVad: {
       en: "It is the most elemental form of attention or mental effort, and to the salesman means simply: \"Well, I see you!\"",
-      ro: "E forma cea mai elementară a atenției, a efortului mintal, iar pentru vânzător înseamnă doar atât: „Bine, te văd!”",
+      ro: "E forma cea mai elementară a atenției, a efortului mintal, iar pentru vânzător înseamnă doar atât: «Bine, te văd!»",
       loc: "Capitolul VII, etapa I (atenția involuntară)"
     },
     primaImpresie: {
@@ -51,7 +51,7 @@ window.CAMERA = {
     },
     frontReal: {
       en: "But remember this always: the best \"front\" is the real one",
-      ro: "Dar ține minte mereu: cea mai bună „fațadă” e cea adevărată",
+      ro: "Dar ține minte mereu: cea mai bună «fațadă» e cea adevărată",
       loc: "Capitolul VIII, „The Approach”"
     },
     meritaSimpatia: {
@@ -61,7 +61,7 @@ window.CAMERA = {
     },
     zapada: {
       en: "\"Go out and make some more impressions--on a snow bank.\"",
-      ro: "„Du-te și mai fă niște impresii: într-un troian de zăpadă.”",
+      ro: "«Du-te și mai fă niște impresii: într-un troian de zăpadă.»",
       loc: "Capitolul VIII, anecdota vânzătorului care „făcea impresie”"
     },
     radacina: {
@@ -86,12 +86,12 @@ window.CAMERA = {
     },
     ocupat: {
       en: "Never commit the folly of asking a prospect: \"Are you busy?\"",
-      ro: "Nu face niciodată prostia să-l întrebi pe un posibil client: „Sunteți ocupat?”",
+      ro: "Nu face niciodată prostia să-l întrebi pe un posibil client: «Sunteți ocupat?»",
       loc: "Capitolul VIII, „The Approach”"
     },
     consideratie: {
       en: "It is the \"I think I will look into this matter\" stage of the mental process of purchase.",
-      ro: "E etapa „cred că o să mă uit mai atent la asta” din procesul mintal al cumpărării.",
+      ro: "E etapa «cred că o să mă uit mai atent la asta» din procesul mintal al cumpărării.",
       loc: "Capitolul VII, etapa a V-a (considerația)"
     },
     aiciIncepe: {
@@ -106,17 +106,17 @@ window.CAMERA = {
     },
     firDirect: {
       en: "The Imagination is the \"direct wire\" to Desire.",
-      ro: "Imaginația e „firul direct” către dorință.",
+      ro: "Imaginația e «firul direct» către dorință.",
       loc: "Capitolul VII, etapa a VI-a (imaginația)"
     },
     wantTo: {
       en: "Therefore, the important aim of the Salesman is to make his prospect \"want to.\"",
-      ro: "Prin urmare, ținta importantă a vânzătorului e să-l facă pe client „să vrea”.",
+      ro: "Prin urmare, ținta importantă a vânzătorului e să-l facă pe client «să vrea».",
       loc: "Capitolul VII, etapa a VII-a (înclinația)"
     },
     deliberare: {
       en: "It is the \"to buy or not to buy\" stage.",
-      ro: "E etapa „a cumpăra sau a nu cumpăra”.",
+      ro: "E etapa «a cumpăra sau a nu cumpăra».",
       loc: "Capitolul VII, etapa a VIII-a (deliberarea)"
     },
     scuze: {
@@ -126,7 +126,7 @@ window.CAMERA = {
     },
     jeppe: {
       en: "\"My stomach says drink--my back says soap,\" says Jeppe.",
-      ro: "„Stomacul îmi zice băutură, spatele îmi zice săpun”, spune Jeppe.",
+      ro: "«Stomacul îmi zice băutură, spatele îmi zice săpun», spune Jeppe.",
       loc: "Capitolul VII, etapa a VIII-a, exemplul din comedia cu Jeppe"
     },
     motivPuternic: {
@@ -151,7 +151,7 @@ window.CAMERA = {
     },
     tejghea: {
       en: "\"get on the customer's side of the counter,\" that is, to try to see the matter from the customer's viewpoint.",
-      ro: "„să treacă de partea clientului a tejghelei”, adică să încerce să vadă lucrurile din punctul de vedere al clientului.",
+      ro: "«să treacă de partea clientului a tejghelei», adică să încerce să vadă lucrurile din punctul de vedere al clientului.",
       loc: "Capitolul II, politețea"
     },
     sansa: {
@@ -161,7 +161,7 @@ window.CAMERA = {
     },
     renunta: {
       en: "'How about being honest when the customer asks you a question that you know in your heart you cannot answer straight-forwardly?' The answer is: Drop that line; the sooner the better.",
-      ro: "„Cum rămâne cu cinstea când clientul îți pune o întrebare la care știi, în sinea ta, că nu poți răspunde deschis?” Răspunsul e: renunță la marfa aceea; cu cât mai repede, cu atât mai bine.",
+      ro: "«Cum rămâne cu cinstea când clientul îți pune o întrebare la care știi, în sinea ta, că nu poți răspunde deschis?» Răspunsul e: renunță la marfa aceea; cu cât mai repede, cu atât mai bine.",
       loc: "Capitolul IX, citat din Pierce"
     },
     faraExagerari: {
@@ -176,7 +176,7 @@ window.CAMERA = {
     },
     nuAuzi: {
       en: "But if he does get out a \"No!\" or two--do not hear him.",
-      ro: "Iar dacă tot îi scapă un „Nu!” sau două, nu-l auzi.",
+      ro: "Iar dacă tot îi scapă un «Nu!» sau două, nu-l auzi.",
       loc: "Capitolul VIII, „The Approach”"
     },
     autoritate: {
@@ -191,12 +191,12 @@ window.CAMERA = {
     },
     niciodataNu: {
       en: "\"Never take 'No!' for an answer,\" says the old song",
-      ro: "„Nu accepta niciodată un «Nu!» drept răspuns”, spune vechiul cântec",
+      ro: "«Nu accepta niciodată un ‹Nu!› drept răspuns», spune vechiul cântec",
       loc: "Capitolul X, „The Closing”"
     },
     tablaDeSah: {
       en: "\"The buyer's brain is the board upon which the game is played.",
-      ro: "„Creierul cumpărătorului e tabla pe care se joacă partida.",
+      ro: "Creierul cumpărătorului e tabla pe care se joacă partida.",
       loc: "Capitolul IV, începutul"
     }
   },
@@ -299,7 +299,7 @@ window.CAMERA = {
         "<p>Cartea amestecă observații care se verifică și azi cu lucruri care nu rezistă:</p>" +
         "<ul>" +
         "<li><strong>Frenologia.</strong> Capitolele IV–V împart cumpărătorii după „facultăți” localizate pe craniu. E pseudoștiință; camera nu folosește aceste capitole.</li>" +
-        "<li><strong>Limbajul epocii.</strong> Atkinson compară curiozitatea „raselor primitive” cu a maimuțelor , scrie aproape numai despre vânzători bărbați, iar femeile apar mai ales în exemple cu pălării și podoabe. Sunt prejudecățile vremii, nu observații.</li>" +
+        "<li><strong>Limbajul epocii.</strong> Atkinson compară curiozitatea „raselor primitive” cu a maimuțelor, scrie aproape numai despre vânzători bărbați, iar femeile apar mai ales în exemple cu pălării și podoabe. Sunt prejudecățile vremii, nu observații.</li>" +
         "<li><strong>Clientul ca adversar.</strong> Metafora șahului are o față mai puțin plăcută: dacă vânzarea e o partidă, clientul e cel pe care îl învingi.</li>" +
         "</ul>" +
         "@@citat:tablaDeSah@@" +
