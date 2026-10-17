@@ -26,7 +26,7 @@ window.CAMERA = {
     /* cuvântul-înainte din 1914 („Apologia”) */
     uitat: {
       en: "\"I forgot\" won't do in business.",
-      ro: "„Am uitat” nu ține în afaceri.",
+      ro: "«Am uitat» nu ține în afaceri.",
       loc: "Cuvântul-înainte din 1914, „Horse Sense” (Bun-simț)"
     },
     loialitate: {
@@ -583,7 +583,7 @@ window.CAMERA = {
       "Eseul a fost împărțit de companii de căi ferate și de armate angajaților și soldaților. Cui îi folosește un text care laudă omul care nu întreabă? Ce s-ar fi întâmplat dacă „scrisoarea” ar fi conținut un ordin greșit?",
       "Hubbard pune munca bună și pe seama fricii (secundul cu ciomag, „șutul” de sâmbătă seara). E frica un motor bun pentru responsabilitate? Ce alternative există?",
       "Hubbard recunoaște: „Am spus-o prea apăsat? Se poate” și scrie că sunt „lucruri de spus de ambele părți”. Pe cine nu-l lasă eseul să vorbească? (Funcționarul, stenograful, omul care caută de lucru.)",
-      "Ce idee rezistă după toate aceste critici? (De obicei: rezolvă singur ce se poate rezolva, nu-ți pasa treaba altuia, du-o la capăt și anunță când e gata.)"
+      "Ce idee rezistă după toate aceste critici? (De obicei: rezolvă singur ce se poate rezolva, nu arunca treaba pe altcineva, du-o la capăt și anunță când e gata.)"
     ],
     diferentiere: [
       "Sprijin: lucrați doar cu lacătele 1, 2 și 4 și cu jocul de ordonare; citiți indiciile cu voce tare.",

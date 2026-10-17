@@ -259,7 +259,7 @@
           "@@citat:creditul@@" +
           "<p>Father Abraham nu vorbește doar despre bani. El descrie ce se întâmplă cu <em>omul</em> care nu-și poate plăti datoria: îi e rușine să-și vadă creditorul, se teme când vorbește cu el, inventează scuze.</p>" +
           "@@citat:libertatea@@" +
-          "<p>Indiciu: urmărește lanțul până la capăt. Unde ajunge, pas cu pas, omul îndatorat? (Îți va trebui la lacătul 3.)</p>"
+          "<p>Indiciu: urmărește lanțul până la capăt. Unde ajunge, pas cu pas, omul îndatorat? (Îți va trebui la lotul 3.)</p>"
       },
       {
         id: "final",
@@ -330,7 +330,7 @@
           "@@citat:probitate@@" +
           "<p>Sună convingător, dar e bilanțul unui om care a reușit, scris după ce a reușit. Chiar Father Abraham admite, la final, că munca și economia nu garantează nimic:</p>" +
           "@@citat:binecuvantare@@" +
-          "<p>Și încă ceva: Franklin însuși a deținut, o parte din viață, oameni înrobiți; abia la bătrânețe a devenit președintele unei societăți care lupta pentru abolirea sclaviei. O listă de virtuți nu spune totul despre cine o scrie. Lacătul 5 te pune la încercare exact aici.</p>"
+          "<p>Și încă ceva: Franklin însuși a deținut, o parte din viață, oameni înrobiți; abia la bătrânețe a devenit președintele unei societăți care lupta pentru abolirea sclaviei. O listă de virtuți nu spune totul despre cine o scrie. Lotul 5 te pune la încercare exact aici.</p>"
       }
     ],
 

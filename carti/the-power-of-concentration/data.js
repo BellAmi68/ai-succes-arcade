@@ -72,7 +72,7 @@ window.CAMERA = {
     },
     femeia: {
       en: "It was the \"Will To Do\" that she used to accomplish her task.",
-      ro: "Era „voința de a face” cea pe care a folosit-o ca să-și ducă la capăt sarcina.",
+      ro: "Era «voința de a face» cea pe care a folosit-o ca să-și ducă la capăt sarcina.",
       loc: "Lecția a VI-a, povestea femeii care își salvează lucrurile din casa în flăcări"
     },
     numaraInvers: {
@@ -82,7 +82,7 @@ window.CAMERA = {
     },
     pliu: {
       en: "We are liable to be \"bent\" or \"curved\" as we can bend a piece of paper, and each fold leaves a crease, which makes it easier to make the fold there the next time.",
-      ro: "Putem fi „îndoiți” sau „curbați” așa cum îndoim o foaie de hârtie, iar fiecare pliu lasă o urmă, care face mai ușoară îndoirea în același loc data viitoare.",
+      ro: "Putem fi «îndoiți» sau «curbați» așa cum îndoim o foaie de hârtie, iar fiecare pliu lasă o urmă, care face mai ușoară îndoirea în același loc data viitoare.",
       loc: "Lecția a IX-a, „Concentrarea poate învinge obiceiurile proaste”"
     },
     obiceiOpus: {
@@ -152,7 +152,7 @@ window.CAMERA = {
     },
     nuPot: {
       en: "Never say \"I can't concentrate today.\" You can do it just the minute you say \"I will.\"",
-      ro: "Nu spune niciodată „Azi nu mă pot concentra”. Poți, chiar din clipa în care spui „Vreau”.",
+      ro: "Nu spune niciodată «Azi nu mă pot concentra». Poți, chiar din clipa în care spui «Vreau».",
       loc: "Lecția a XX-a, recapitularea"
     },
     practica: {

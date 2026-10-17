@@ -441,6 +441,7 @@ window.CAMERA = {
       tip: "sapa",
       titlu: "Joc 2 · Ar semna Barnum?",
       instructiuni: "Sapă în fiecare parcelă. Decide: ar semna Barnum sfatul găsit? Răspuns corect = monedă de aur.",
+      recompensa: { una: "Monedă de aur", multe: "Monede de aur" },
       etichete: ["Da, e sfatul lui", "Nu, nu e sfatul lui"],
       elemente: [
         { text: "Notează-ți fiecare cheltuială și împarte-le în necesare și luxuri.", da: true, explicatie: "E chiar „rețeta” lui împotriva risipei." },
@@ -498,7 +499,7 @@ window.CAMERA = {
       { minute: "5–15", etapa: "Dosarul de indicii", activitate: "În perechi, elevii citesc „Cine a fost P. T. Barnum”, „Regele farselor publicitare”, „Economia adevărată” și „Datoria lucrează și noaptea”. Fiecare pereche notează un sfat care li se pare bun și un motiv de neîncredere." },
       { minute: "15–30", etapa: "Breakout (lacătele 1–4)", activitate: "Echipe de 3–4. Regulă: nu se apasă butonul până când toată echipa poate explica de ce citatul ales dovedește răspunsul." },
       { minute: "30–38", etapa: "Lacătul 5 + discuție", activitate: "Frontal: fapt sau opinie? Ce dovezi ne-ar trebui ca să verificăm „nouă din zece”? Legătură cu „despre cei care pierd auzim rareori”." },
-      { minute: "38–45", etapa: "Dezbatere scurtă", activitate: "Întrebarea r2 de la reflecție: integritatea predicată de Barnum vs. farsele lui. Două tabere, câte un minut de argumente pe tabără, apoi vot liber." },
+      { minute: "38–45", etapa: "Dezbatere scurtă", activitate: "A doua întrebare de la reflecție: integritatea predicată de Barnum vs. farsele lui. Două tabere, câte un minut de argumente pe tabără, apoi vot liber." },
       { minute: "45–50", etapa: "Bilet de ieșire", activitate: "Itemul 7 din fișă sau, pe scurt: „Un sfat de-al lui Barnum pe care l-aș urma este… pentru că…”" }
     ],
     fisaElev: {

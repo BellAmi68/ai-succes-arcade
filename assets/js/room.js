@@ -321,11 +321,13 @@
     var saved = (state.jocuri[G.id] && state.jocuri[G.id].raspunsuri) || {};
     var grid = el("div", { class: "mine" });
     var score = el("p", { class: "score", role: "status" });
+    // Recompensa afișată pentru un răspuns corect; implicit „diamant”, ca în prima cameră.
+    var R = G.recompensa || { una: "Diamant", multe: "Diamante" };
 
     function updateScore() {
       var keys = Object.keys(saved);
       var gems = keys.filter(function (k) { return saved[k]; }).length;
-      score.textContent = "Diamante: " + gems + " · Parcele săpate: " + keys.length + " din " + G.elemente.length;
+      score.textContent = R.multe + ": " + gems + " · Parcele săpate: " + keys.length + " din " + G.elemente.length;
       if (keys.length === G.elemente.length) {
         score.textContent += gems === G.elemente.length ? " — mină golită fără nicio greșeală!" : " — gata! Citește explicațiile pentru pietrele găsite.";
       }
@@ -341,7 +343,7 @@
       function reveal(result) {
         tile.className = "tile dug " + (result ? "gem" : "rock");
         tile.innerHTML = "";
-        tile.appendChild(el("span", { class: "badge", text: result ? "◆ Diamant" : "● Piatră" }));
+        tile.appendChild(el("span", { class: "badge", text: result ? "◆ " + R.una : "● Piatră" }));
         tile.appendChild(el("span", { class: "q", text: item.text }));
         tile.appendChild(el("span", { class: "why", text: (item.da ? "Da. " : "Nu. ") + item.explicatie }));
       }
@@ -355,7 +357,7 @@
           saved[i] = ok;
           reveal(ok);
           persist();
-          LCS.announce(ok ? "Diamant!" : "Piatră. " + item.explicatie);
+          LCS.announce(ok ? R.una + "!" : "Piatră. " + item.explicatie);
         }
         yes.addEventListener("click", function () { answer(true); });
         no.addEventListener("click", function () { answer(false); });
